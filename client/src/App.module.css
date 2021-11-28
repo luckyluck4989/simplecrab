@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.OddEvenBtn {
+	float: left;
+}
+
+.bigblue {
+	color: DodgerBlue;
+	padding: 40px;
+	font-family: Sans-Serif;
+	text-align: center;
+}
+
+body {
+	overflow-y: scroll;
+}
+
+.rowgameinfo {
+	display: flex;
+	flex-direction: column;
+	row-gap: 15px;
+}
+
+.rowstyle {
+	height: 70px;
+	align-items: center;
+}
+
+.hostplayeraws {
+	width: 300px;
+}
+
+.footerStyle {
+	background-color: #2e383a;
+    font-size: 14px;
+    color: white;
+    border-top: 1px solid rgb(231, 231, 231);
+    text-align: center;
+    padding: 20px;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 60px;
+    width: 100%;
+    z-index: 9999;
+}
+
+.phantomStyle {
+	display: block;
+    padding: 20px;
+    height: 80px;
+    width: 100%;
+}
+
+.tokendisplay {
+	display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+	align-items: center;
+}
