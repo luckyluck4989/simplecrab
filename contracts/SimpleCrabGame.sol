@@ -41,18 +41,19 @@ contract SimpleCrabGame is ERC721 {
     Battle[] public battles;
 
     //  Random use
-    uint public winBattleCnt;
-    uint public loseBattleCnt;
+    uint private winBattleCnt;
+    uint private loseBattleCnt;
 
     // **** EVENT DEFINITION
-    event NewCrab(address indexed owner, uint256 crabID, uint256 kind, uint256 strength, CrabState state);
-    event UpdateCrab(address indexed owner, uint256 crabID, uint256 strength, CrabState state);
-    event NewBattle(uint256 indexed _battleID, uint256 _battleAmount, address _p1Adress, uint256 _p1CrabID, address _p2Adress, uint256 _p2CrabID, uint256 _winerCrabID, BattleState _battleStatus, uint256 _battleStartTime, uint256 _battleEndTime);
-    event UpdateBattle(uint256 indexed _battleID, uint256 _battleAmount, address _p1Adress, uint256 _p1CrabID, address _p2Adress, uint256 _p2CrabID, uint256 _winerCrabID, BattleState _battleStatus, uint256 _battleStartTime, uint256 _battleEndTime);
+    // eventType (1001 : NewCrab, 1002: UpdateCrab, 1003: NewBattle, 1004: UpdateBatte)
+    event NewCrab(uint256 indexed eventType, address owner, uint256 crabID, uint256 kind, uint256 strength, CrabState state);
+    event UpdateCrab(uint256 indexed eventType, address owner, uint256 crabID, uint256 strength, CrabState state);
+    event NewBattle(uint256 indexed eventType, uint256 _battleID, uint256 _battleAmount, address _p1Adress, uint256 _p1CrabID, address _p2Adress, uint256 _p2CrabID, uint256 _winerCrabID, BattleState _battleStatus, uint256 _battleStartTime, uint256 _battleEndTime);
+    event UpdateBattle(uint256 indexed eventType, uint256 _battleID, address _p1Adress, uint256 _p1CrabID, address _p2Adress, uint256 _p2CrabID, uint256 _winerCrabID, BattleState _battleStatus, uint256 _battleStartTime, uint256 _battleEndTime);
 
     // **** CONTRACT METHOD
     // constructor
-    constructor (address _tokenAddress) ERC721("SimpleCrabGame", "SCG") {
+    constructor (address _tokenAddress) ERC721("CrabInfo Management Token", "SCG721") {
         winBattleCnt = 0;
         loseBattleCnt = 0;
         erc20TokenInfo = ERC20(_tokenAddress);
@@ -72,7 +73,7 @@ contract SimpleCrabGame is ERC721 {
         crabs.push(Crab(_id, _strength, _kind, CrabState.Free));
         _mint(msg.sender, _id);
 
-        emit NewCrab(msg.sender, _id, _kind, _strength, CrabState.Free);
+        emit NewCrab(1001, msg.sender, _id, _kind, _strength, CrabState.Free);
     }
 
     // Start new battle
@@ -87,11 +88,12 @@ contract SimpleCrabGame is ERC721 {
 
         // take crab to busy
         crabs[_p1CrabID].state = CrabState.Busy;
-        emit UpdateCrab(msg.sender, _p1CrabID, crabs[_p1CrabID].strength, CrabState.Busy);
+        emit UpdateCrab(1002, msg.sender, _p1CrabID, crabs[_p1CrabID].strength, CrabState.Busy);
 
         // start new battle
+        uint256 _battleID = battles.length;
         battles.push(Battle(
-            battles.length,             // Battle ID
+            _battleID,                  // Battle ID
             _battleAmount,              // ERC20 token must pay for this game if lose
             msg.sender,                 // Crab1 of owner address
             _p1CrabID,                  // Crab1 ID
@@ -104,7 +106,8 @@ contract SimpleCrabGame is ERC721 {
         ));
 
         emit NewBattle (
-            battles.length,             // Battle ID (start from 1)
+             1003,                      // eventType
+            _battleID,                  // Battle ID (start from 1)
             _battleAmount,              // ERC20 token must pay for this game if lose
             msg.sender,                 // Crab1 of owner address
             _p1CrabID,                  // Crab1 ID
@@ -112,7 +115,7 @@ contract SimpleCrabGame is ERC721 {
             0,                          // Crab2 ID
             0,                          // Winner crabID
             BattleState.Waiting,                        // Battle status (Waiting, Fighting, Ended)
-            battles[battles.length].battleStartTime,    // Starttime of battle
+            battles[_battleID].battleStartTime,         // Starttime of battle
             0                                           // Endtime of battle
         );
     }
@@ -129,7 +132,7 @@ contract SimpleCrabGame is ERC721 {
 
         // take crab to busy
         crabs[_p2CrabID].state = CrabState.Busy;
-        emit UpdateCrab(msg.sender, _p2CrabID, crabs[_p2CrabID].strength, CrabState.Busy);
+        emit UpdateCrab(1002, msg.sender, _p2CrabID, crabs[_p2CrabID].strength, CrabState.Busy);
 
         // check battle status
         require(battles[_battleID].battleStatus != BattleState.Waiting, 'Battle maybe already started, please reconfirm !');
@@ -140,8 +143,8 @@ contract SimpleCrabGame is ERC721 {
         battles[_battleID].p2Adress         = msg.sender;
 
         emit UpdateBattle (
+            1004,                               // eventType
             _battleID,                          // Battle ID (start from 1)
-            battles[_battleID].battleAmount,    // ERC20 token must pay for this game if lose
             battles[_battleID].p1Adress,        // Crab1 of owner address
             battles[_battleID].p1CrabID,        // Crab1 ID
             msg.sender,                         // Crab2 of owner address
@@ -171,6 +174,7 @@ contract SimpleCrabGame is ERC721 {
         // p1Win
         if (_crab1Strength + _p1RandomStrength > _crab2Strength + _diffStrength - _p1RandomStrength) {
             battles[_battleID].winerCrabID = battles[_battleID].p1CrabID;
+            winBattleCnt++;
 
             // crab1 stronger
             if (_crab1Strength >= _crab2Strength) {
@@ -187,6 +191,7 @@ contract SimpleCrabGame is ERC721 {
         // p2Win
         } else {
             battles[_battleID].winerCrabID = battles[_battleID].p2CrabID;
+            loseBattleCnt++;
 
             // crab1 stronger
             if (_crab1Strength >= _crab2Strength) {
@@ -205,12 +210,12 @@ contract SimpleCrabGame is ERC721 {
         battles[_battleID].battleEndTime = block.timestamp;
         crabs[battles[_battleID].p1CrabID].state = CrabState.Free;
         crabs[battles[_battleID].p2CrabID].state = CrabState.Free;
-        emit UpdateCrab(msg.sender, battles[_battleID].p1CrabID, crabs[battles[_battleID].p1CrabID].strength, CrabState.Free);
-        emit UpdateCrab(msg.sender, battles[_battleID].p2CrabID, crabs[battles[_battleID].p2CrabID].strength, CrabState.Free);
+        emit UpdateCrab(1002, msg.sender, battles[_battleID].p1CrabID, crabs[battles[_battleID].p1CrabID].strength, CrabState.Free);
+        emit UpdateCrab(1002, msg.sender, battles[_battleID].p2CrabID, crabs[battles[_battleID].p2CrabID].strength, CrabState.Free);
 
         emit UpdateBattle (
+            1004,                                   // eventType
             _battleID,                              // Battle ID (start from 1)
-            battles[_battleID].battleAmount,        // ERC20 token must pay for this game if lose
             battles[_battleID].p1Adress,            // Crab1 of owner address
             battles[_battleID].p1CrabID,            // Crab1 ID
             battles[_battleID].p2Adress,            // Crab2 of owner address
