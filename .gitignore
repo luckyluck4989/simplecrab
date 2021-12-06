@@ -1,5 +1,4 @@
 .DS_Store
-*.json
 node_modules/
 server/node_modules/
 server/contracts/
@@ -9,3 +8,4 @@ client/src/contracts/SimpleStorage.json
 server/contracts/Migrations.json
 server/contracts/SimpleStorage.json
 server/package-lock.json
+client/src/contracts/Migrations.json
