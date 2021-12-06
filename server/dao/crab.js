@@ -11,7 +11,6 @@ module.exports = {
   addCrab : function (_crabInfo) {
       let db_connect = dbo.getDb();
       let myobj = {
-        _id             : ObjectId(_crabInfo.crabID)
         owner           : _crabInfo.owner,
         crabID          : _crabInfo.crabID,
         strength        : _crabInfo.strength,
@@ -19,17 +18,25 @@ module.exports = {
         state           : _crabInfo.state
       };
 
-      console.log(myobj);
       db_connect.collection("crab").insertOne(myobj, function (err, res) {
         if (err) throw err;
-        console.log(res);
+        //console.log(res);
       });
+
+	  let myquery = {};
+  
+	  db_connect
+		  .collection("crab")
+		  .find(myquery, function (err, result) {
+			if (err) throw err;
+			console.log(result);
+		  });
   },
   // Update info to db
   // event UpdateCrab(uint256 indexed eventType, address owner, uint256 crabID, uint256 strength, CrabState state);
   updateCrab : function (_crabInfo) {
       let db_connect = dbo.getDb();
-      let myquery = { _id : ObjectId(_crabInfo.crabID)};
+      let myquery = { crabID : _crabInfo.crabID, owner : _crabInfo.owner};
       let newvalues = {
         $set : {
           strength  : _crabInfo.strength,

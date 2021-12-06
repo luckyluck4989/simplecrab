@@ -5,9 +5,9 @@ require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
 const Web3 = require('web3');
 const fs = require('fs');
-const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:8545');
+const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:7545');
 let web3 = new Web3(provider);
-let senderAccount = '0x2C5b0Dd54bdF044629AA4b042FCa7b230b9e60Aa';
+let senderAccount = '0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd';
 const contractJSON = JSON.parse(fs.readFileSync('./contracts/SimpleCrabGame.json'), 'utf8');
 const abi = contractJSON.abi;
 const contract = new web3.eth.Contract(abi, senderAccount);
@@ -26,8 +26,19 @@ app.listen(port, () => {
     dbo.connectToServer(function (err) {
     	console.log('Connect DB');
     	if (err) console.error(err);
-    
+		let db_connect = dbo.getDb();
+
+			
+		db_connect
+			.collection("battle")
+			.find({})
+			.toArray(function (err, result) {
+			  if (err) throw err;
+			  console.log(result);
+			});
     });
+
+
 
     console.log(`Server is running on port: ${port}`);
 
@@ -38,11 +49,11 @@ app.listen(port, () => {
                 const eventSig = result.topics[0];
                 for (let abi of eventAbis) {
                     if (eventSig === abi.signature) {
-                        console.log('-----------------------------------');
-                        console.log('ABI:' + eventSig);
+                        //console.log('-----------------------------------');
+                        //console.log('ABI:' + eventSig);
                         const decoded = web3.eth.abi.decodeLog(abi.inputs, result.data, result.topics.slice(1));
-                        console.log(decoded);
-                        console.log(decoded.eventType);
+                        //console.log(decoded);
+                        //console.log(decoded.eventType);
 
                         if (decoded.eventType == 'undefined')
                             return;
