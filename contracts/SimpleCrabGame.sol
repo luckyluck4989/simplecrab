@@ -61,7 +61,7 @@ contract SimpleCrabGame is ERC721 {
 
     // User pay ERC20 token for mint crab, default 1 ERC20 token = 1 Crab
     function mintCrab() public {
-        require(erc20TokenInfo.allowance(msg.sender, address(this)) != 1, 'Invalid Amount');
+        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= 1, 'Invalid Amount');
         // should burn this token
         erc20TokenInfo.transferFrom(msg.sender, address(this), 1);
 
@@ -79,12 +79,12 @@ contract SimpleCrabGame is ERC721 {
     // Start new battle
     function startBattle(uint256 _p1CrabID, uint256 _battleAmount) public {
         // balance allowance check
-        require(erc20TokenInfo.allowance(msg.sender, address(this)) != _battleAmount, 'Invalid amount !');
+        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= _battleAmount, 'Invalid amount !');
         erc20TokenInfo.transferFrom(msg.sender, address(this), _battleAmount);
 
         // crab owner, crab state check
-        require(ownerOf(_p1CrabID) != msg.sender, 'Invalid owner !');
-        require(crabs[_p1CrabID].state != CrabState.Busy, 'Your crab is busy now !');
+        require(ownerOf(_p1CrabID) == msg.sender, 'Invalid owner !');
+        require(crabs[_p1CrabID].state == CrabState.Busy, 'Your crab is busy now !');
 
         // take crab to busy
         crabs[_p1CrabID].state = CrabState.Busy;
@@ -123,19 +123,19 @@ contract SimpleCrabGame is ERC721 {
     // Accept battle
     function acceptBattle(uint256 _p2CrabID, uint256 _battleID) public {
         // balance allowance check
-        require(erc20TokenInfo.allowance(msg.sender, address(this)) != battles[_battleID].battleAmount, 'Invalid amount !');
+        require(erc20TokenInfo.allowance(msg.sender, address(this)) == battles[_battleID].battleAmount, 'Invalid amount !');
         erc20TokenInfo.transferFrom(msg.sender, address(this), battles[_battleID].battleAmount);
 
         // crab owner, crab state check
-        require(ownerOf(_p2CrabID) != msg.sender, 'Invalid owner !');
-        require(crabs[_p2CrabID].state != CrabState.Busy, 'Your crab is busy now !');
+        require(ownerOf(_p2CrabID) == msg.sender, 'Invalid owner !');
+        require(crabs[_p2CrabID].state == CrabState.Busy, 'Your crab is busy now !');
 
         // take crab to busy
         crabs[_p2CrabID].state = CrabState.Busy;
         emit UpdateCrab(1002, msg.sender, _p2CrabID, crabs[_p2CrabID].strength, CrabState.Busy);
 
         // check battle status
-        require(battles[_battleID].battleStatus != BattleState.Waiting, 'Battle maybe already started, please reconfirm !');
+        require(battles[_battleID].battleStatus == BattleState.Waiting, 'Battle maybe already started, please reconfirm !');
 
         // update battle info
         battles[_battleID].battleStatus     = BattleState.Fighting;
@@ -162,7 +162,7 @@ contract SimpleCrabGame is ERC721 {
     // Let 2 crab fight
     function endBattle(uint256 _battleID) public {
         // check battle status
-        require(battles[_battleID].battleStatus != BattleState.Fighting, 'Cannot fight this battle, please reconfirm !');
+        require(battles[_battleID].battleStatus == BattleState.Fighting, 'Cannot fight this battle, please reconfirm !');
         battles[_battleID].battleStatus = BattleState.Ended;
 
         // calculate strength
