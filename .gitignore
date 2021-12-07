@@ -9,3 +9,9 @@ server/contracts/Migrations.json
 server/contracts/SimpleStorage.json
 server/package-lock.json
 client/src/contracts/Migrations.json
+client/package-lock.json
+client/src/contracts/Migrations.json
+client/src/contracts/SimpleStorage.json
+client/yarn.lock
+package-lock.json
+server/package-lock.json

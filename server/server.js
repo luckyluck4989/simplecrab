@@ -27,18 +27,7 @@ app.listen(port, () => {
     	console.log('Connect DB');
     	if (err) console.error(err);
 		let db_connect = dbo.getDb();
-
-			
-		db_connect
-			.collection("battle")
-			.find({})
-			.toArray(function (err, result) {
-			  if (err) throw err;
-			  console.log(result);
-			});
     });
-
-
 
     console.log(`Server is running on port: ${port}`);
 
@@ -47,13 +36,14 @@ app.listen(port, () => {
             console.log(err);
         } else {
                 const eventSig = result.topics[0];
+
                 for (let abi of eventAbis) {
                     if (eventSig === abi.signature) {
-                        //console.log('-----------------------------------');
-                        //console.log('ABI:' + eventSig);
+						// Approve eject (Need research)
+						if (abi.inputs.length < 5)
+							return;
+
                         const decoded = web3.eth.abi.decodeLog(abi.inputs, result.data, result.topics.slice(1));
-                        //console.log(decoded);
-                        //console.log(decoded.eventType);
 
                         if (decoded.eventType == 'undefined')
                             return;
@@ -82,8 +72,6 @@ app.listen(port, () => {
                             default:
                                 console.log('Invalid !');
                         }
-
-
                     }
                 }
             }
