@@ -18,17 +18,17 @@ import Spinner from "../components/ui/Spinner";
 
 const Home = () => {
   let stateObj = {web3: null, accounts: null, tokenContract: null, gameContract: null};
-  const [filteredGames, setFilteredGames] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  //const [filteredCrabs, setFilteredCrabs] = useState([]);
+  //const [searchTerm, setSearchTerm] = useState("");
   const [state, setState] = useState(stateObj);
 
-  /*const {
-    data: allGames,
+  const {
+    data: allCrabs,
     isPending,
     error,
-  } = useFetch(`${process.env.REACT_APP_API_URL}/games`);*/
+  } = useFetch(`${process.env.REACT_APP_API_URL}/mycrab/`);
 
-  const {
+ /* const {
     data : allCrabs,
     isPending,
     error,
@@ -37,7 +37,7 @@ const Home = () => {
       {
           "_id": "61ab5e64940bd853957a35eb",
           "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-          "kind": '9',
+          "kind": '0',
           "crabId": 1,
           "thumbnail": "https://www.freetogame.com/g/1/thumbnail.jpg",
           "strength": "100",
@@ -48,7 +48,7 @@ const Home = () => {
       {
          "_id": "61ab5e64940bd853957a35eb",
          "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-         "kind": '9',
+         "kind": '1',
           "crabId": 2,
           "thumbnail": "https://www.freetogame.com/g/2/thumbnail.jpg",
           "strength": "100",
@@ -59,7 +59,7 @@ const Home = () => {
       {
          "_id": "61ab5e64940bd853957a35eb",
          "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-         "kind": '9',
+         "kind": '2',
           "crabId": 3,
           "thumbnail": "https://www.freetogame.com/g/3/thumbnail.jpg",
           "strength": "100",
@@ -70,7 +70,7 @@ const Home = () => {
       {
          "_id": "61ab5e64940bd853957a35eb",
          "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-         "kind": '9',
+         "kind": '3',
           "crabId": 4,
           "thumbnail": "https://www.freetogame.com/g/4/thumbnail.jpg",
           "strength": "100",
@@ -81,7 +81,7 @@ const Home = () => {
       {
           "_id": "61ab5e64940bd853957a35eb",
           "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-          "kind": '9',
+          "kind": '4',
           "crabId": 5,
           "thumbnail": "https://www.freetogame.com/g/5/thumbnail.jpg",
           "strength": "100",
@@ -92,7 +92,7 @@ const Home = () => {
       {
           "_id": "61ab5e64940bd853957a35eb",
           "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-          "kind": '9',
+          "kind": '5',
           "crabId": 6,
           "thumbnail": "https://www.freetogame.com/g/6/thumbnail.jpg",
           "strength": "100",
@@ -103,7 +103,7 @@ const Home = () => {
       {
           "_id": "61ab5e64940bd853957a35eb",
           "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-          "kind": '9',
+          "kind": '6',
           "crabId": 7,
           "thumbnail": "https://www.freetogame.com/g/7/thumbnail.jpg",
           "strength": "100",
@@ -114,7 +114,7 @@ const Home = () => {
       {
           "_id": "61ab5e64940bd853957a35eb",
           "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-          "kind": '9',
+          "kind": '7',
           "crabId": 8,
           "thumbnail": "https://www.freetogame.com/g/8/thumbnail.jpg",
           "strength": "100",
@@ -125,7 +125,7 @@ const Home = () => {
       {
           "_id": "61ab5e64940bd853957a35eb",
           "owner": "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd",
-          "kind": '9',
+          "kind": '8',
           "crabId": 9,
           "thumbnail": "https://www.freetogame.com/g/9/thumbnail.jpg",
           "strength": "100",
@@ -257,7 +257,7 @@ const Home = () => {
   ],
   isPending : false,
   error : null
-  };
+  };*/
 
   //const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -310,34 +310,22 @@ const Home = () => {
       console.error(error);
     }
   }
-  const loadBlockchainData = async () => {
-  }
 
   useEffect(() => {
-    /*if (debouncedSearchTerm && allGames) {
-      setFilteredGames(
-        allGames.filter((game) =>
-          game.crabId.includes(debouncedSearchTerm.toLowerCase())
+    /*if (debouncedSearchTerm && allCrabs) {
+      setFilteredCrabs(
+        allCrabs.filter((crab) =>
+        crab.crabId.includes(debouncedSearchTerm.toLowerCase())
         )
       );
     }*/
     initWeb3();
   },[]);
-  //}, [debouncedSearchTerm, allGames]);
+  //}, [debouncedSearchTerm, allCrabs]);
 
   	// Host creat new game
 	const mintCrab = (event) => {
 		event.preventDefault();
-		//loadingHandler(event.target.id, true);
-
-		// Update game info state
-		//var newGameListCreated = [...gameListCreated];
-		//var newGameItem = {gameID : "0x00", nonce : getNonce()};
-
-		// Solidity hash host selection
-		//let txhash;
-	//	let hashHostSelection = state.web3.utils.soliditySha3(gameInfo.hostInput, newGameItem.nonce);
-
 		// Send transaction
 		state.tokenContract.methods.approve(
 			state.gameContract._address,
@@ -347,20 +335,6 @@ const Home = () => {
 			// Send transaction
 			state.gameContract.methods.mintCrab().send({ from : state.accounts[0] })
 			.then(function(result) {
-				/*txhash = result.transactionHash;
-				newGameItem.gameID = result.events.StartGame.returnValues._gameID;
-				newGameListCreated.push(newGameItem);
-				setGameListCreated(newGameListCreated);
-				
-				// Save nonce to local storage
-				localStorage.setItem(newGameItem.gameID, newGameItem.nonce);
-
-				// Wait for transaction confirm
-				waitForReceipt(txhash, function () {
-					// Hide waiting and load token
-					loadingHandler(event.target.id, false);
-					loadTokenBalance();
-				});*/
         console.log(result);
 			}).catch(function(err) {
 				console.log(err.message);

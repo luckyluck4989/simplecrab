@@ -15,18 +15,11 @@ export const useFetch = (url) => {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(url, {
-          signal,
-          headers: {
-            "x-rapidapi-host": process.env.REACT_APP_API_HOST,
-            "x-rapidapi-key": process.env.REACT_APP_API_KEY,
-          },
-        });
+        const response = await fetch(url, {signal});
 
         if (!response.ok) {
           throw new Error("Could not fetch the data.");
         }
-
         const result = await response.json();
         setData(result);
         setIsPending(false);

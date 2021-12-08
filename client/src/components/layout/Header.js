@@ -12,7 +12,7 @@ const Header = () => {
     <header className={styles.header}>
       <div className={`${styles.container} container`}>
         <NavLink to="/">
-          <IoGameController className={styles.logo} />
+          <img src="/logo.056281dd.svg" alt="image" className={styles.logo} />
         </NavLink>
         <nav className={styles.navigation}>
           <ul>
@@ -26,7 +26,7 @@ const Header = () => {
             </li>
             <li>
               <NavLink
-                to="popular"
+                to="battle"
                 style={({ isActive }) => (isActive ? activeStyle : undefined)}
               >
                 Battle

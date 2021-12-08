@@ -18,7 +18,9 @@ const CrabItem = ({ item: crab }) => {
       </div>
       <div className={styles.card_body}>
         <Link to={`/crabs/${crab.crabId}`}>
-          <img className={styles.thumbnail} src={crab.thumbnail} alt="test" />
+          <div className={styles.divthumbnail}>
+            <img className={styles.thumbnail} src={`/crab/${crab.kind}.png`} alt="test" />
+          </div>
         </Link>
         <div className={styles.card_info}>
            <span>Strength : {crab.strength} | Win : {crab.winBattle} | Lose : {crab.loseBattle}</span>

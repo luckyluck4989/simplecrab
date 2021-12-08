@@ -19,8 +19,8 @@
 }
 
 .logo {
-  font-size: 4rem;
-  fill: #eeeeee;
+  width: 100%;
+  height: 40px;
 }
 
 .navigation ul {
