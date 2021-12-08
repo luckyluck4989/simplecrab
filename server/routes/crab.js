@@ -14,18 +14,13 @@ const battleDAO = require("../dao/battle");
 const ObjectId = require("mongodb").ObjectId;
 
 crabRoutes.route("/mycrab").get(function (req, res) {
-	/*
-	console.log("Into mycrab route");
-	console.log(crabDAO.getMyCrab());
-	res.json(crabDAO.getMyCrab());
-	*/
-	console.log(req.params.owner);
     let db_connect = dbo.getDb();
-    let myquery = { "owner" : req.params.owner};
+    let myquery = { "owner" : req.query.owner};
 
     db_connect
         .collection("crab")
         .find(myquery)
+		.sort({"crabID" : 1})
 		.toArray(function (err, result) {
           if (err) throw err;
 		  res.json(result);
@@ -33,7 +28,18 @@ crabRoutes.route("/mycrab").get(function (req, res) {
 });
 
 crabRoutes.route("/battle").get(function (req, res) {
-	res.json(battleDAO.getBattle());
+	//res.json(battleDAO.getBattle());
+    let db_connect = dbo.getDb();
+    let myquery = {};
+
+    db_connect
+        .collection("battle")
+        .find(myquery)
+		.sort({"battleStartTime" : -1})
+		.toArray(function (err, result) {
+          if (err) throw err;
+		  res.json(result);
+        });
 });
 
 /*
