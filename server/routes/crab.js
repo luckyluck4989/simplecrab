@@ -7,9 +7,34 @@ const crabRoutes = express.Router();
 
 // This will help us connect to the database
 const dbo = require("../db/conn");
+const crabDAO = require("../dao/crab");
+const battleDAO = require("../dao/battle");
 
 // This help convert the id from string to ObjectId for the _id.
 const ObjectId = require("mongodb").ObjectId;
+
+crabRoutes.route("/mycrab").get(function (req, res) {
+	/*
+	console.log("Into mycrab route");
+	console.log(crabDAO.getMyCrab());
+	res.json(crabDAO.getMyCrab());
+	*/
+	console.log(req.params.owner);
+    let db_connect = dbo.getDb();
+    let myquery = { "owner" : req.params.owner};
+
+    db_connect
+        .collection("crab")
+        .find(myquery)
+		.toArray(function (err, result) {
+          if (err) throw err;
+		  res.json(result);
+        });
+});
+
+crabRoutes.route("/battle").get(function (req, res) {
+	res.json(battleDAO.getBattle());
+});
 
 /*
 // This section will help you get a list of all the crab.

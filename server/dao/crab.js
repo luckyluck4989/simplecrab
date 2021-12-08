@@ -51,5 +51,19 @@ module.exports = {
           console.log("1 document updated");
           console.log(res);
         });
+  },
+  //get a list of all the crab
+  getMyCrab : function() { 
+	console.log("Into getMyCrab DAO");
+    let db_connect = dbo.getDb();
+    let myquery = {};
+
+    db_connect
+        .collection("crab")
+        .find({})
+		.toArray(function (err, result) {
+          if (err) throw err;
+		  return result;
+        });
   }
 };

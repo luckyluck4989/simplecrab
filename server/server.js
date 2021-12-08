@@ -16,6 +16,8 @@ const eventAbis = contract.options.jsonInterface.filter((abiObj) => abiObj.type 
 app.use(cors());
 app.use(express.json());
 app.use(require("./routes/record"));
+app.use(require("./routes/crab"));
+
 // get driver connection
 const dbo = require("./db/conn");
 const crabDAO = require("./dao/crab");
@@ -31,7 +33,9 @@ app.listen(port, () => {
 
     console.log(`Server is running on port: ${port}`);
 
-    let subscription = web3.eth.subscribe("logs", function(err, result){
+    let subscription = web3.eth.subscribe("logs", {
+			address: '0x694282d0303754D1910aC4d85d1246ea7b19e01b'
+		}, function(err, result){
         if (err){
             console.log(err);
         } else {
@@ -39,10 +43,6 @@ app.listen(port, () => {
 
                 for (let abi of eventAbis) {
                     if (eventSig === abi.signature) {
-						// Approve eject (Need research)
-						if (abi.inputs.length < 5)
-							return;
-
                         const decoded = web3.eth.abi.decodeLog(abi.inputs, result.data, result.topics.slice(1));
 
                         if (decoded.eventType == 'undefined')

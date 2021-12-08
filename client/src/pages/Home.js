@@ -4,6 +4,7 @@ import { useFetch } from "../hooks/useFetch";
 import { useDebounce } from "../hooks/useDebounce";
 import { Button } from 'react-bootstrap';
 import getWeb3  from '../helpers/getWeb3.js';
+import axios from 'axios';
 
 import SimpleStorageContract from "../contracts/SimpleCrabGame.json";
 import SCG20Token from "../contracts/SCG20Token.json";
@@ -22,13 +23,17 @@ const Home = () => {
   //const [searchTerm, setSearchTerm] = useState("");
   const [state, setState] = useState(stateObj);
 
-  const {
-    data: allCrabs,
-    isPending,
-    error,
-  } = useFetch(`${process.env.REACT_APP_API_URL}/mycrab/`);
+/*
+const  {
+	data : allCrabs,
+	isPending,
+	error,
+} = useFetch(`${process.env.REACT_APP_API_URL}/mycrab/`);
 
- /* const {
+console.log(allCrabs);
+*/
+
+ const {
     data : allCrabs,
     isPending,
     error,
@@ -257,7 +262,7 @@ const Home = () => {
   ],
   isPending : false,
   error : null
-  };*/
+  };
 
   //const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
@@ -320,6 +325,19 @@ const Home = () => {
       );
     }*/
     initWeb3();
+
+	axios.get("http://localhost:5000/mycrab", {
+		params : {
+			owner : "0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd"
+		}
+	})
+	.then((response) => {
+	  console.log(response);
+	})
+	.catch(function (error) {
+	  console.log(error);
+	});
+
   },[]);
   //}, [debouncedSearchTerm, allCrabs]);
 
