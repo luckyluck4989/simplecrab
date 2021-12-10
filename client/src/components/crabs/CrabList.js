@@ -6,7 +6,7 @@ const CrabList = ({ items }) => {
   return (
     <div className={styles.grid}>
       {items.map((crab) => (
-        <CrabItem key={crab.crabId} item={crab} />
+        <CrabItem key={crab.crabID} item={crab} />
       ))}
     </div>
   );

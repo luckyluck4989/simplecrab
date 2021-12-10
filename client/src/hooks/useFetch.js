@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import axios from 'axios';
 
-export const useFetch = (url) => {
+export const useFetch = (url, currentAccountInfo) => {
   const [data, setData] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
@@ -13,7 +14,7 @@ export const useFetch = (url) => {
     setIsPending(true);
     setError(null);
 
-    const fetchData = async () => {
+    /*const fetchData = async () => {
       try {
         const response = await fetch(url, {signal});
 
@@ -33,12 +34,39 @@ export const useFetch = (url) => {
           setError(error.message);
         }
       }
+    };*/
+    const fetchData = async () => {
+    try {
+
+      let res = await axios({
+        url: url,
+        method: 'get',
+        params : {
+          owner : currentAccountInfo
+        },
+        timeout: 8000,
+        headers: {
+                'Content-Type': 'application/json',
+        }
+      });
+
+      if(res.status == 200){
+          // test for status you want, etc
+          console.log(res.status)
+      }
+      setData(res.data);
+      setIsPending(false);
+      setError(null); 
+    } catch (err) {
+      console.error(err);
+      setError(true); 
     };
+  };
 
     fetchData();
 
     return () => controller.abort();
-  }, [url]);
+  }, [url, currentAccountInfo]);
 
   return { data, isPending, error };
 };

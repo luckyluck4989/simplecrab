@@ -14,10 +14,10 @@ const CrabItem = ({ item: crab }) => {
   return (
     <div className={styles.card}>
       <div className={styles.card_header}>
-        <span>#{crab.crabId}</span>
+        <span>#{crab.crabID}</span>
       </div>
       <div className={styles.card_body}>
-        <Link to={`/crabs/${crab.crabId}`}>
+        <Link to={`/crabs/${crab.crabID}`}>
           <div className={styles.divthumbnail}>
             <img className={styles.thumbnail} src={`/crab/${crab.kind}.png`} alt="test" />
           </div>
@@ -32,11 +32,7 @@ const CrabItem = ({ item: crab }) => {
           variant="info" type="submit"
           //onClick={() => addToFavorite(game)}
         >
-          {
-            gameIsFavorite(crab.crabId)
-              ? "Accept Battle"
-              : "Put Crab To Battle"
-          }
+          Put Crab To Battle
         </Button>
         </div>
       </div>
