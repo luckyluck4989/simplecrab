@@ -27,6 +27,37 @@ crabRoutes.route("/mycrab").get(function (req, res) {
         });
 });
 
+crabRoutes.route("/crab_detail").get(function (req, res) {
+	let db_connect = dbo.getDb();
+	let crabQuery = { "crabID" : req.query.crabID };
+	var returnData = new Object();
+
+	db_connect
+		.collection("crab")
+		.findOne(crabQuery, function (err, result) {
+		  if (err) throw err;
+		  returnData.crabInfo = result;
+
+		  let battleQuery = {
+			$or: [
+				{'p1CrabID': req.query.crabID},
+				{'p2CrabID': req.query.crabID}
+			]
+		  };
+
+		  db_connect
+			.collection("battle")
+			.find(battleQuery)
+			.sort({"battleStartTime" : -1})
+			.toArray(function (err, result) {
+				if (err) throw err;
+				returnData.battleHistory = result;
+				res.json(returnData);
+			});
+
+		});
+});
+
 crabRoutes.route("/battle").get(function (req, res) {
 	//res.json(battleDAO.getBattle());
     let db_connect = dbo.getDb();
@@ -40,6 +71,65 @@ crabRoutes.route("/battle").get(function (req, res) {
           if (err) throw err;
 		  res.json(result);
         });
+});
+
+crabRoutes.route("/battle_detail").get(function (req, res) {
+	let db_connect = dbo.getDb();
+	let battleQuery = { "battleID" : req.query.battleID };
+	var returnData = new Object();
+
+	// battle info
+	db_connect
+		.collection("battle")
+		.findOne(battleQuery, function (err, result) {
+		  if (err) throw err;
+		  returnData.battleInfo = result;
+
+		let p1CrabQuery = { "crabID" : result.p1CrabID };
+		
+		// p1 crab info
+		db_connect
+		  .collection("crab")
+		  .findOne(p1CrabQuery, function (err, result) {
+			if (err) throw err;
+			returnData.p1CrabInfo = result;
+  
+			let battleQuery = {
+			  $or: [
+				  {'p1CrabID': returnData.battleInfo.crabID},
+				  {'p2CrabID': returnData.battleInfo.crabID}
+			  ]
+			};
+  
+			// p1 crab battle history
+			db_connect
+			  .collection("battle")
+			  .find(battleQuery)
+			  .sort({"battleStartTime" : -1})
+			  .toArray(function (err, result) {
+				  if (err) throw err;
+				  returnData.p1BattleHistory = result;
+
+				  let myCrabQuery = {
+					"owner" : req.query.owner.toLowerCase() ,
+					"state" : "0"
+				  };
+
+				  // my crab can accept battle
+				  db_connect
+					  .collection("crab")
+					  .find(myCrabQuery)
+					  .sort({"crabID" : 1})
+					  .toArray(function (err, result) {
+						if (err) throw err;
+						returnData.myCrabInfo = result;
+
+						res.json(returnData);
+					  });
+
+			});
+	  	});
+	});
 });
 
 /*
