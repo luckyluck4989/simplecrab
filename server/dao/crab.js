@@ -11,7 +11,7 @@ module.exports = {
   addCrab : function (_crabInfo) {
       let db_connect = dbo.getDb();
       let myobj = {
-        owner           : _crabInfo.owner,
+        owner           : _crabInfo.owner.toLowerCase(),
         crabID          : _crabInfo.crabID,
         strength        : _crabInfo.strength,
         kind            : _crabInfo.kind,
@@ -36,7 +36,7 @@ module.exports = {
   // event UpdateCrab(uint256 indexed eventType, address owner, uint256 crabID, uint256 strength, CrabState state);
   updateCrab : function (_crabInfo) {
       let db_connect = dbo.getDb();
-      let myquery = { crabID : _crabInfo.crabID, owner : _crabInfo.owner};
+      let myquery = { crabID : _crabInfo.crabID, owner : _crabInfo.owner.toLowerCase()};
       let newvalues = {
         $set : {
           strength  : _crabInfo.strength,

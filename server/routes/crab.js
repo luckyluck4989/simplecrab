@@ -15,7 +15,7 @@ const ObjectId = require("mongodb").ObjectId;
 
 crabRoutes.route("/mycrab").get(function (req, res) {
     let db_connect = dbo.getDb();
-    let myquery = { "owner" : req.query.owner};
+    let myquery = { "owner" : req.query.owner.toLowerCase() };
 
     db_connect
         .collection("crab")

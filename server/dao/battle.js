@@ -13,9 +13,9 @@ module.exports = {
 	let myobj = {
 	battleID         : _battleInfo._battleID,
 	battleAmount     : _battleInfo._battleAmount,
-	p1Adress         : _battleInfo._p1Adress,
+	p1Adress         : _battleInfo._p1Adress.toLowerCase(),
 	p1CrabID         : _battleInfo._p1CrabID,
-	p2Adress         : _battleInfo._p2Adress,
+	p2Adress         : _battleInfo._p2Adress.toLowerCase(),
 	p2CrabID         : _battleInfo._p2CrabID,
 	winerCrabID      : _battleInfo._winerCrabID,
 	battleStatus     : _battleInfo._battleStatus,
@@ -36,7 +36,7 @@ module.exports = {
 	let myquery = { battleID : _battleInfo._battleID};
 	let newvalues = {
 	$set : {
-		p2Adress         : _battleInfo._p2Adress,
+		p2Adress         : _battleInfo._p2Adress.toLowerCase(),
 		p2CrabID         : _battleInfo._p2CrabID,
 		winerCrabID      : _battleInfo._winerCrabID,
 		battleStatus     : _battleInfo._battleStatus,
