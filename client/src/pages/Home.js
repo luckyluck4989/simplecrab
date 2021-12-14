@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import CrabList from "../components/crabs/CrabList";
 import Spinner from "../components/ui/Spinner";
 import { useInitWeb3 } from "../hooks/useInitWeb3";
-import myCrabApi from "../api/mycrabApi";
+import crabApi from "../api/crabApi";
 import styles from "./Home.module.css";
 
 import getWeb3  from '../helpers/getWeb3.js';
@@ -23,7 +23,7 @@ const Home = () => {
       setError(null);
 
       const params = {owner : state.currentAccountInfo};
-      const response = await myCrabApi.getMyCrab(params);
+      const response = await crabApi.getMyCrab(params);
 
       setMyCrab(response.data);
       setIsPending(false);
