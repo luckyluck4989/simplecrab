@@ -4,9 +4,10 @@ import crabApi from "../api/crabApi";
 import { GoBrowser } from "react-icons/go";
 import {toTimeFormat} from "../helpers/Utility.js";
 
+
 // styles
 import styles from "./Details.module.css";
-import { Button, Table } from 'react-bootstrap';
+import { Button, Table, Form } from 'react-bootstrap';
 
 import Spinner from "../components/ui/Spinner";
 
@@ -61,6 +62,8 @@ const Details = () => {
             </li>
           </ul>
           </div>
+          <div className={styles.action_battle}>
+          <Form.Control placeholder="SCG" className={styles.token}/>
           <Button
             className={styles.button_battle}
             variant="info" type="submit"
@@ -68,6 +71,7 @@ const Details = () => {
           >
             Put Crab To Battle
           </Button>
+          </div>
           {crab.battleHistory.length > 0 && (
             <span className={styles.title}>Battle History </span>
           )}

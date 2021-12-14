@@ -27,7 +27,7 @@
 }
 
 .button_battle {
-  width: 100%;
+  width: calc(100% - 80px);
 }
 
 .divthumbnail {
@@ -35,6 +35,13 @@
   background-color: var(--bg-header);
   display: flex;
   border-radius: 20px;
+}
+
+.token {
+  width: 70px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .thumbnail {

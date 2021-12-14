@@ -19,6 +19,11 @@
   color: white;
 }
 
+.battleID {
+  background: #e68035!important;
+  margin-right: 10px;
+}
+
 .card_info {
   margin: 2rem 0;
   font-size: 12px;

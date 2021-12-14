@@ -2,16 +2,16 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AiFillWindows, AiFillHeart } from "react-icons/ai";
 import { GoBrowser } from "react-icons/go";
-import { Button } from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faPastafarianism } from '@fortawesome/free-solid-svg-icons'
 // styles
 import styles from "./CrabItem.module.css";
 
 import { useInitWeb3 } from "../../hooks/useInitWeb3";
-//import myCrabApi from "../../api/mycrabApi";
-import { FavoritesContext } from "../../context/FavoritesContext";
+
 
 const CrabItem = ({ item: crab }) => {
-  	const { addToFavorite, gameIsFavorite } = useContext(FavoritesContext);
   	const [state, setState] = useInitWeb3();
 
 	// Create new battle
@@ -39,7 +39,7 @@ const CrabItem = ({ item: crab }) => {
 	return (
 		<div className={styles.card}>
 			<div className={styles.card_header}>
-			<span>#{crab.crabID}</span>
+			<span><FontAwesomeIcon icon={faPastafarianism}/>{crab.crabID}</span>
 			</div>
 			<div className={styles.card_body}>
 			<Link to={`/crabs/${crab.crabID}`}>
@@ -52,14 +52,15 @@ const CrabItem = ({ item: crab }) => {
 			</div>
 			</div>
 			<div className={styles.card_footer}>
-			<Button
-				className={styles.button_battle}
-				variant="info" type="submit"
-				//onClick={() => addToFavorite(game)}
-				onClick={putCrabToBattle}
-			>
-				Put Crab To Battle
-			</Button>
+				<Form.Control placeholder="SCG" className={styles.token}/>
+				<Button
+					className={styles.button_battle}
+					variant="info" type="submit"
+					//onClick={() => addToFavorite(game)}
+					onClick={putCrabToBattle}
+				>
+					Put Crab To Battle
+				</Button>
 			</div>
 		</div>
 	);

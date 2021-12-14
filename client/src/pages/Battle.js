@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { Button } from 'react-bootstrap';
 
 // styles
 import styles from "./Battle.module.css";

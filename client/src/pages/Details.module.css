@@ -8,7 +8,7 @@
 }
 
 .button_battle {
-  width: 300px;
+  width: 220px;
 }
 
 .table {
@@ -21,6 +21,19 @@
   margin-bottom: 2rem;
   box-shadow: 0 6px 1.2rem rgba(0, 0, 0, 0.15);
   width: 300px;
+}
+
+.action_battle {
+  display: flex;
+  justify-content: space-between;
+  width: 300px;
+}
+
+.token {
+  width: 70px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
 }
 
 .title {
@@ -95,7 +108,6 @@
     float: none;
     margin: 0;
     width: 100%;
-    aspect-ratio: 16 / 9;
     object-fit: cover;
     margin-bottom: 2rem;
   }

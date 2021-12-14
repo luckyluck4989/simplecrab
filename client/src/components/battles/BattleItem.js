@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Button } from 'react-bootstrap';
 import {toTimeFormat} from "../../helpers/Utility.js";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faKhanda } from '@fortawesome/free-solid-svg-icons'
+import { faBahai, faPastafarianism } from '@fortawesome/free-solid-svg-icons'
 
 // styles
 import styles from "./BattleItem.module.css";
@@ -12,7 +12,8 @@ const BattleItem = ({ item: battle }) => {
   return (
     <div className={styles.card}>
       <div className={styles.card_header}>
-     <span>#{battle.battleID} | #{battle.p1CrabID}</span>
+     <span className={styles.battleID}><FontAwesomeIcon icon={faBahai}/>{battle.battleID}</span> 
+     <span><FontAwesomeIcon icon={faPastafarianism}/>{battle.p1CrabID}</span> 
       </div>
       <div className={styles.card_body}>
         <Link to={`/battles/${battle.battleID}`}>
