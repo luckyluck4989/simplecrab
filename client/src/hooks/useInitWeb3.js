@@ -42,8 +42,9 @@ export const useInitWeb3 = () => {
         console.error(error);
       }
     };
-
-    initWeb3();
+    if (!state.web3) {
+      initWeb3();
+    }
 
   }, []);
 

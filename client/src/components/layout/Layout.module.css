@@ -1,5 +1,6 @@
 .main_content {
   margin: 10rem auto;
+  font-family: cursive;
 }
 
 @media screen and (max-width: 576px) {

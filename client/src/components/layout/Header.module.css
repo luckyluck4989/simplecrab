@@ -34,7 +34,7 @@
 
 .navigation a {
   color: rgba(255, 255, 255, 0.8);
-  font-family: var(--font-secondary);
+  font-family: cursive;
 }
 
 .navigation a:hover {

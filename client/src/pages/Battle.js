@@ -1,31 +1,45 @@
-import { useState } from "react";
-import { useFetch } from "../hooks/useFetch";
+import { useState, useEffect } from "react";
+import { Button } from 'react-bootstrap';
 
 // styles
 import styles from "./Battle.module.css";
 
-import CrabList from "../components/crabs/CrabList";
+import BattleList from "../components/battles/BattleList";
 import Spinner from "../components/ui/Spinner";
 
+import battleApi from "../api/battleApi";
+
 const Battle = () => {
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  let url = `${process.env.REACT_APP_API_URL}/games?sort-by=popularity`;
 
-  if (selectedCategory) {
-    url = `${process.env.REACT_APP_API_URL}/games?sort-by=popularity&category=${selectedCategory}`;
-  }
+  const [battle, setBattle] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+  const [error, setError] = useState(null);
 
-  const { data, isPending, error } = useFetch(url);
-  const currentYear = new Date().getFullYear();
-  const currentMonth = Intl.DateTimeFormat("en-US", { month: "long" }).format(
-    new Date()
-  );
+  const fetchData = async () => {
+    try {
+      setBattle(null);
+      setIsPending(true);
+      setError(null);
+
+      const response = await battleApi.getBattle();
+
+      setBattle(response.data);
+      setIsPending(false);
+    } catch (err) {
+      console.error(err);
+      setError(err.message); 
+    };
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <section className={styles.popular}>
       {isPending && <Spinner />}
       {error && <p>{error}</p>}
-      {data && <CrabList items={data.slice(0, 10)} />}
+      {battle && <BattleList items={battle} />}
     </section>
   );
 };

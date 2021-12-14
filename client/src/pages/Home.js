@@ -6,6 +6,10 @@ import { useInitWeb3 } from "../hooks/useInitWeb3";
 import myCrabApi from "../api/mycrabApi";
 import styles from "./Home.module.css";
 
+import getWeb3  from '../helpers/getWeb3.js';
+import SimpleStorageContract from "../contracts/SimpleCrabGame.json";
+import SCG20Token from "../contracts/SCG20Token.json";
+
 const Home = () => {
   const [myCrab, setMyCrab] = useState(null);
   const [isPending, setIsPending] = useState(false);

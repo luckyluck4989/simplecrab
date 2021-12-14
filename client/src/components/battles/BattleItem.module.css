@@ -1,0 +1,144 @@
+.card {
+  background: #32383e;
+  border-radius: 5px;
+  overflow-x: hidden;
+  box-shadow: 0 0.3rem 1rem rgba(0, 0, 0, 0.1);
+  height: 334px;
+  border-radius: 20px;
+}
+
+.card_header {
+  padding: 2rem;
+}
+
+.card_header > span{
+  border-radius: 10px;
+  padding: 0px 15px;
+  font-weight: bold;
+  background: #0fa1d4;
+  color: white;
+}
+
+.card_info {
+  margin: 2rem 0;
+  font-size: 12px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.card_info > span {
+  text-align: center;
+}
+
+.button_battle {
+  width: 100%;
+}
+
+.divthumbnail {
+  height: 140px;
+  background-color: var(--bg-header);
+  display: flex;
+  border-radius: 20px;
+}
+
+.iconmoney {
+  height: 50px;
+  width: auto;
+}
+
+.spanthumbnail{
+  height: 60px;
+  background-color: #e68035;
+  display: flex;
+  border-radius: 20px;
+  width: calc(100% - 30px);
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.thumbnail {
+  height: 165px;
+  width: auto;
+  margin: auto;
+  background-color: var(--bg-header);
+}
+
+.card_body {
+  padding: 0 2rem;
+}
+
+.title {
+  color: #aaaaaa;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.title:hover {
+  color: #cfcfcf;
+  text-decoration: underline;
+}
+
+.description {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card_footer {
+  margin: 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card_footer div {
+  display: flex;
+  align-items: center;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 2px 8px;
+  border-radius: 8px;
+  background-color: #7a8288;
+  color: #000000;
+  font-weight: 700;
+  margin-right: 1rem;
+}
+
+.platform_icon {
+  display: inline-block;
+  color: #7a8288;
+  font-size: 2rem;
+}
+
+.btn {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.heart_icon {
+  color: #aaaaaa;
+  font-size: 2rem;
+}
+
+.heart_icon:hover {
+  color: #fff;
+}
