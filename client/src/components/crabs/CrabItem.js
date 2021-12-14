@@ -6,37 +6,63 @@ import { Button } from 'react-bootstrap';
 // styles
 import styles from "./CrabItem.module.css";
 
+import { useInitWeb3 } from "../../hooks/useInitWeb3";
+//import myCrabApi from "../../api/mycrabApi";
 import { FavoritesContext } from "../../context/FavoritesContext";
 
 const CrabItem = ({ item: crab }) => {
-  const { addToFavorite, gameIsFavorite } = useContext(FavoritesContext);
+  	const { addToFavorite, gameIsFavorite } = useContext(FavoritesContext);
+  	const [state, setState] = useInitWeb3();
 
-  return (
-    <div className={styles.card}>
-      <div className={styles.card_header}>
-        <span>#{crab.crabID}</span>
-      </div>
-      <div className={styles.card_body}>
-        <Link to={`/crabs/${crab.crabID}`}>
-          <div className={styles.divthumbnail}>
-            <img className={styles.thumbnail} src={`/crab/${crab.kind}.png`} alt="test" />
-          </div>
-        </Link>
-        <div className={styles.card_info}>
-           <span>Strength : {crab.strength} | Win : {crab.win} | Lose : {crab.lose}</span>
-        </div>
-      </div>
-      <div className={styles.card_footer}>
-        <Button
-          className={styles.button_battle}
-          variant="info" type="submit"
-          //onClick={() => addToFavorite(game)}
-        >
-          Put Crab To Battle
-        </Button>
-        </div>
-      </div>
-  );
+	// Create new battle
+	const putCrabToBattle = (event) => {
+		event.preventDefault();
+		// Send transaction
+		state.tokenContract.methods.approve(
+			state.gameContract._address,
+			1,
+		).send({ from : state.accounts[0] })
+		.then(function(result) {
+			// Send transaction
+			state.gameContract.methods.mintCrab().send({ from : state.accounts[0] })
+			.then(function(result) {
+				console.log(result);
+				//fetchData();
+			}).catch(function(err) {
+				console.log(err.message);
+			});
+		}).catch(function(err) {
+				console.log(err.message);
+		});
+	};
+
+	return (
+		<div className={styles.card}>
+			<div className={styles.card_header}>
+			<span>#{crab.crabID}</span>
+			</div>
+			<div className={styles.card_body}>
+			<Link to={`/crabs/${crab.crabID}`}>
+				<div className={styles.divthumbnail}>
+				<img className={styles.thumbnail} src={`/crab/${crab.kind}.png`} alt="test" />
+				</div>
+			</Link>
+			<div className={styles.card_info}>
+				<span>Strength : {crab.strength} | Win : {crab.win} | Lose : {crab.lose}</span>
+			</div>
+			</div>
+			<div className={styles.card_footer}>
+			<Button
+				className={styles.button_battle}
+				variant="info" type="submit"
+				//onClick={() => addToFavorite(game)}
+				onClick={putCrabToBattle}
+			>
+				Put Crab To Battle
+			</Button>
+			</div>
+		</div>
+	);
 };
 
 export default CrabItem;
