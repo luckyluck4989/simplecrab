@@ -15,7 +15,9 @@ module.exports = {
         crabID          : _crabInfo.crabID,
         strength        : _crabInfo.strength,
         kind            : _crabInfo.kind,
-        state           : _crabInfo.state
+        state           : _crabInfo.state,
+		win             : 0,
+		lose            : 0
       };
 
       db_connect.collection("crab").insertOne(myobj, function (err, res) {
@@ -52,6 +54,57 @@ module.exports = {
           console.log(res);
         });
   },
+  // Update crab win lose info
+  updateCrabWinLose : function (_battleInfo) {
+	// end game only
+	if (_battleInfo.battleStatus != "2") return;
+
+	let db_connect = dbo.getDb();
+	let crab1Query = { "crabID" : _battleInfo.p1CrabID };
+	let crab2Query = { "crabID" : _battleInfo.p2CrabID };
+
+	// crab1 update
+	db_connect
+		.collection("crab")
+		.findOne(crab1Query, function (err, result) {
+		  if (err) throw err;
+
+		  let newvalues = {
+			$set : {
+			  win   : _battleInfo.p1CrabID == _battleInfo.winerCrabID ? result.win + 1 : result.win,
+			  lose  : _battleInfo.p1CrabID == _battleInfo.winerCrabID ? result.lose : result.lose + 1
+			}
+		  };
+
+		  db_connect
+		    .collection("crab")
+		    .updateOne(crab1Query, newvalues, function (err, res) {
+			  if (err) throw err;
+			  console.log("Crab1 winlose updated");
+		  });
+	    });
+
+	// crab2 update
+	db_connect
+		.collection("crab")
+		.findOne(crab2Query, function (err, result) {
+		  if (err) throw err;
+
+		  let newvalues = {
+			$set : {
+			  win   : _battleInfo.p2CrabID == _battleInfo.winerCrabID ? result.win + 1 : result.win,
+			  lose  : _battleInfo.p2CrabID == _battleInfo.winerCrabID ? result.lose : result.lose + 1
+			}
+		  };
+
+		  db_connect
+		    .collection("crab")
+		    .updateOne(crab2Query, newvalues, function (err, res) {
+			  if (err) throw err;
+			  console.log("Crab2 winlose updated");
+		  });
+	    });
+},
   //get a list of all the crab
   getMyCrab : function() { 
 	console.log("Into getMyCrab DAO");

@@ -23,7 +23,7 @@ const CrabItem = ({ item: crab }) => {
           </div>
         </Link>
         <div className={styles.card_info}>
-           <span>Strength : {crab.strength} | Win : {crab.winBattle} | Lose : {crab.loseBattle}</span>
+           <span>Strength : {crab.strength} | Win : {crab.win} | Lose : {crab.lose}</span>
         </div>
       </div>
       <div className={styles.card_footer}>

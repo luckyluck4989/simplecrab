@@ -64,9 +64,10 @@ app.listen(port, () => {
                             	battleDAO.addBattle(decoded);
                                 console.log('New Battle Created');
                                 break;
-                            // battle info updated
+                            // battle info update, crab info winlose update
                             case '1004':
                                 battleDAO.updateBattle(decoded);
+								crabDAO.updateCrabWinLose(decoded);
                                 console.log('Battle Info Updated');
                                 break;
                             default:
