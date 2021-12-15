@@ -11,7 +11,7 @@ import styles from "./CrabItem.module.css";
 import { useInitWeb3 } from "../../hooks/useInitWeb3";
 
 
-const CrabItem = ({ item: crab, pageuse }) => {
+const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
   	const [state, setState] = useInitWeb3();
 	const [token, setToken] = useState("");
 	console.log(token);
@@ -62,8 +62,8 @@ const CrabItem = ({ item: crab, pageuse }) => {
 			</div>
 			</div>
 			<div className={styles.card_footer}>
-				{pageuse != "battle" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
-				{pageuse != "battle" && (<Button
+				{pageUse != "battle" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
+				{pageUse != "battle" && (<Button
 					className={styles.button_battle}
 					variant="info" type="submit"
 					disabled={token == "" || crab.state == "1"}
@@ -73,7 +73,7 @@ const CrabItem = ({ item: crab, pageuse }) => {
 					Put Crab To Battle
 				</Button>
 				)}
-				{pageuse == "battle" && (<Button
+				{pageUse == "battle" && (<Button
 					className={styles.button_battle_detail}
 					variant="info" type="submit"
 					//onClick={() => addToFavorite(game)}
