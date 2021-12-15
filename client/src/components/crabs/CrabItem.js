@@ -39,6 +39,32 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 		});
 	};
 
+	// accept battle
+	const acceptBattle = (event) => {
+		event.preventDefault();
+
+		console.log(battleInfo.battleAmount);
+		console.log(crab.crabID);
+		console.log(battleInfo.battleID);
+
+		// Send transaction
+		state.tokenContract.methods.approve(
+			state.gameContract._address,
+			battleInfo.battleAmount,
+		).send({ from : state.accounts[0] })
+		.then(function(result) {
+			// acceptBattle(uint256 _p2CrabID, uint256 _battleID)
+			state.gameContract.methods.acceptBattle(crab.crabID, battleInfo.battleID).send({ from : state.accounts[0] })
+			.then(function(result) {
+				console.log(result);
+				//fetchData();
+			}).catch(function(err) {
+				console.log(err.message);
+			});
+		}).catch(function(err) {
+				console.log(err.message);
+		});
+	};
 	// Input token handler
 	const tokenInputHandler = (event) => {
 		// need check balance of token here
@@ -77,7 +103,7 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 					className={styles.button_battle_detail}
 					variant="info" type="submit"
 					//onClick={() => addToFavorite(game)}
-					onClick={putCrabToBattle}
+					onClick={acceptBattle}
 				>
 					Accept Battle
 				</Button>
