@@ -84,7 +84,7 @@ contract SimpleCrabGame is ERC721 {
 
         // crab owner, crab state check
         require(ownerOf(_p1CrabID) == msg.sender, 'Invalid owner !');
-        require(crabs[_p1CrabID].state == CrabState.Busy, 'Your crab is busy now !');
+        require(crabs[_p1CrabID].state != CrabState.Busy, 'Your crab is busy now !');
 
         // take crab to busy
         crabs[_p1CrabID].state = CrabState.Busy;
@@ -128,7 +128,7 @@ contract SimpleCrabGame is ERC721 {
 
         // crab owner, crab state check
         require(ownerOf(_p2CrabID) == msg.sender, 'Invalid owner !');
-        require(crabs[_p2CrabID].state == CrabState.Busy, 'Your crab is busy now !');
+        require(crabs[_p2CrabID].state != CrabState.Busy, 'Your crab is busy now !');
 
         // take crab to busy
         crabs[_p2CrabID].state = CrabState.Busy;

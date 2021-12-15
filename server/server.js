@@ -34,7 +34,7 @@ app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 
     let subscription = web3.eth.subscribe("logs", {
-			address: '0x694282d0303754D1910aC4d85d1246ea7b19e01b'
+			address: '0xb699D5B64eA09148F944A4C6bBa6Bb51204E8F33'
 		}, function(err, result){
         if (err){
             console.log(err);

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AiFillWindows, AiFillHeart } from "react-icons/ai";
 import { GoBrowser } from "react-icons/go";
@@ -13,18 +13,21 @@ import { useInitWeb3 } from "../../hooks/useInitWeb3";
 
 const CrabItem = ({ item: crab, pageuse }) => {
   	const [state, setState] = useInitWeb3();
+	const [token, setToken] = useState("");
+	console.log(token);
 
 	// Create new battle
 	const putCrabToBattle = (event) => {
 		event.preventDefault();
+
 		// Send transaction
 		state.tokenContract.methods.approve(
 			state.gameContract._address,
-			1,
+			token,
 		).send({ from : state.accounts[0] })
 		.then(function(result) {
-			// Send transaction
-			state.gameContract.methods.mintCrab().send({ from : state.accounts[0] })
+			// startBattle(uint256 _p1CrabID, uint256 _battleAmount)
+			state.gameContract.methods.startBattle(crab.crabID, token).send({ from : state.accounts[0] })
 			.then(function(result) {
 				console.log(result);
 				//fetchData();
@@ -35,6 +38,13 @@ const CrabItem = ({ item: crab, pageuse }) => {
 				console.log(err.message);
 		});
 	};
+
+	// Input token handler
+	const tokenInputHandler = (event) => {
+		// need check balance of token here
+		setToken(event.target.value)
+		//console.log(token);
+	}
 
 	return (
 		<div className={styles.card}>
@@ -52,10 +62,11 @@ const CrabItem = ({ item: crab, pageuse }) => {
 			</div>
 			</div>
 			<div className={styles.card_footer}>
-				{pageuse != "battle" && (<Form.Control placeholder="SCG" className={styles.token}/>)}
+				{pageuse != "battle" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
 				{pageuse != "battle" && (<Button
 					className={styles.button_battle}
 					variant="info" type="submit"
+					disabled={token == "" || crab.state == "1"}
 					//onClick={() => addToFavorite(game)}
 					onClick={putCrabToBattle}
 				>

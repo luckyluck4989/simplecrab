@@ -42,7 +42,7 @@ module.exports = {
       let newvalues = {
         $set : {
           strength  : _crabInfo.strength,
-          state     : _crabInfo.strength
+          state     : _crabInfo.state
         }
       };
 
