@@ -30,6 +30,10 @@
   width: calc(100% - 80px);
 }
 
+.button_battle_detail {
+  width: 100%;
+}
+
 .divthumbnail {
   height: 230px;
   background-color: var(--bg-header);

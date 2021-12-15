@@ -74,7 +74,7 @@ const Home = () => {
         {isPending && <Spinner />}
         {error && <p>{error}</p>}
         {myCrab && (
-          <CrabList items={myCrab} />
+          <CrabList items={myCrab} pageuse={'crab'} />
         )}
       </section>
     </>

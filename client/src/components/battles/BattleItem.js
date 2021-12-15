@@ -26,15 +26,20 @@ const BattleItem = ({ item: battle }) => {
            <span>Start Time : {toTimeFormat(battle.battleStartTime)}</span>
         </div>
       </div>
+      <Link to={`/battles/${battle.battleID}`}>
       <div className={styles.card_footer}>
+
         <Button
-          className={styles.button_battle}
-          variant="info" type="submit"
-          //onClick={() => addToFavorite(game)}
-        >
-          Accept To Battle
-        </Button>
+            className={styles.button_battle}
+            variant="info" type="submit"
+            //onClick={() => addToFavorite(game)}
+          >
+          
+         
+            Accept To Battle
+          </Button>
         </div>
+        </Link>
       </div>
   );
 };

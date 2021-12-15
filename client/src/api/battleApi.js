@@ -5,6 +5,11 @@ class BattleApi {
         const url = '/battle';
         return axiosClient.get(url);
     };
+
+    getBattleById = (params) => {
+        const url = '/battle_detail';
+        return axiosClient.get(url, {params});
+    }
 }
 
 const battleApi = new BattleApi();  

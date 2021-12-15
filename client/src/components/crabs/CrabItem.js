@@ -11,7 +11,7 @@ import styles from "./CrabItem.module.css";
 import { useInitWeb3 } from "../../hooks/useInitWeb3";
 
 
-const CrabItem = ({ item: crab }) => {
+const CrabItem = ({ item: crab, pageuse }) => {
   	const [state, setState] = useInitWeb3();
 
 	// Create new battle
@@ -52,8 +52,8 @@ const CrabItem = ({ item: crab }) => {
 			</div>
 			</div>
 			<div className={styles.card_footer}>
-				<Form.Control placeholder="SCG" className={styles.token}/>
-				<Button
+				{pageuse != "battle" && (<Form.Control placeholder="SCG" className={styles.token}/>)}
+				{pageuse != "battle" && (<Button
 					className={styles.button_battle}
 					variant="info" type="submit"
 					//onClick={() => addToFavorite(game)}
@@ -61,6 +61,16 @@ const CrabItem = ({ item: crab }) => {
 				>
 					Put Crab To Battle
 				</Button>
+				)}
+				{pageuse == "battle" && (<Button
+					className={styles.button_battle_detail}
+					variant="info" type="submit"
+					//onClick={() => addToFavorite(game)}
+					onClick={putCrabToBattle}
+				>
+					Accept Battle
+				</Button>
+				)}
 			</div>
 		</div>
 	);
