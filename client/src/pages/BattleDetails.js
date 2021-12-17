@@ -63,27 +63,27 @@ const BattleDetails = () => {
           <ul className={styles.info_list}>
             <li>
               <span className="text-muted">Battle ID : </span>
-              <p> {battle.battleInfo.battleID}</p>
+              <p> {battle.p1CrabInfo && battle.battleInfo.battleID}</p>
             </li>
             <li>
               <span className="text-muted">Battle Status : </span>
-              <p> {battle.battleInfo.battleStatus}</p>
+              <p> {battle.p1CrabInfo && battle.battleInfo.battleStatus}</p>
             </li>
             <li>
               <span className="text-muted">P1CrabID : </span>
-              <p> {battle.battleInfo.p1CrabID}</p>
+              <p> {battle.p1CrabInfo && battle.battleInfo.p1CrabID}</p>
             </li>
             <li>
               <span className="text-muted">Strength : </span>
-              <p> {battle.p1CrabInfo.strength}</p>
+              <p> {battle.p1CrabInfo && battle.p1CrabInfo.strength}</p>
             </li>
             <li>
               <span className="text-muted">Win : </span>
-              <p> {battle.p1CrabInfo.win}</p>
+              <p> {battle.p1CrabInfo && battle.p1CrabInfo.win}</p>
             </li>
             <li>
               <span className="text-muted">Lose : </span>
-              <p> {battle.p1CrabInfo.lose}</p>
+              <p> {battle.p1CrabInfo && battle.p1CrabInfo.lose}</p>
             </li>
           </ul>
           </div>

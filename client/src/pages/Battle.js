@@ -35,7 +35,7 @@ const Battle = () => {
   }, []);
 
   return (
-    <section className={styles.popular}>
+    <section className={styles.battle}>
       {isPending && <Spinner />}
       {error && <p>{error}</p>}
       {battle && <BattleList items={battle} />}

@@ -28,14 +28,10 @@ const BattleItem = ({ item: battle }) => {
       </div>
       <Link to={`/battles/${battle.battleID}`}>
       <div className={styles.card_footer}>
-
         <Button
             className={styles.button_battle}
             variant="info" type="submit"
-            //onClick={() => addToFavorite(game)}
           >
-          
-         
             Accept To Battle
           </Button>
         </div>
