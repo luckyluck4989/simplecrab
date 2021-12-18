@@ -41,7 +41,7 @@ const BattleDetails = () => {
     if (id) {
         fetchData();
     }
-  }, [id, state.currentAccountInfo]);
+  }, [state.currentAccountInfo, id]);
 
   // Metamask change account
   window.ethereum.on ('accountsChanged', function (accountInfo) {
