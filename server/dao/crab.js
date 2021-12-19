@@ -31,7 +31,7 @@ module.exports = {
 		  .collection("crab")
 		  .find(myquery, function (err, result) {
 			if (err) throw err;
-			console.log(result);
+			//console.log(result);
 		  });
   },
   // Update info to db
@@ -50,8 +50,8 @@ module.exports = {
         .collection("crab")
         .updateOne(myquery, newvalues, function (err, res) {
           if (err) throw err;
-          console.log("1 document updated");
-          console.log(res);
+          //console.log("1 document updated");
+          //console.log(res);
         });
   },
   // Update crab win lose info
@@ -80,7 +80,7 @@ module.exports = {
 		    .collection("crab")
 		    .updateOne(crab1Query, newvalues, function (err, res) {
 			  if (err) throw err;
-			  console.log("Crab1 winlose updated");
+			  //console.log("Crab1 winlose updated");
 		  });
 	    });
 
@@ -101,13 +101,13 @@ module.exports = {
 		    .collection("crab")
 		    .updateOne(crab2Query, newvalues, function (err, res) {
 			  if (err) throw err;
-			  console.log("Crab2 winlose updated");
+			  //console.log("Crab2 winlose updated");
 		  });
 	    });
 },
   //get a list of all the crab
   getMyCrab : function() { 
-	console.log("Into getMyCrab DAO");
+	//console.log("Into getMyCrab DAO");
     let db_connect = dbo.getDb();
     let myquery = {};
 

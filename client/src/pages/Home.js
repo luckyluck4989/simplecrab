@@ -41,7 +41,7 @@ const Home = () => {
     // Send transaction
     state.tokenContract.methods.approve(
           state.gameContract._address,
-          1,
+          state.web3.utils.toWei(state.web3.utils.toBN(1).toString()),
     ).send({ from : state.accounts[0] })
     .then(function(result) {
         // Send transaction

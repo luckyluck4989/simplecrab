@@ -23,10 +23,10 @@ module.exports = {
 	battleEndTime    : _battleInfo._battleEndTime
 	};
 
-	console.log(myobj);
+	//console.log(myobj);
 	db_connect.collection("battle").insertOne(myobj, function (err, res) {
 	if (err) throw err;
-	console.log(res);
+	//console.log(res);
 	});
   },
   // Update info to db
@@ -49,8 +49,8 @@ module.exports = {
 	.collection("battle")
 	.updateOne(myquery, newvalues, function (err, res) {
 		if (err) throw err;
-		console.log("1 document updated");
-		console.log(res);
+		//console.log("1 document updated");
+		//console.log(res);
 	});
   },
   //get all ongoing battles

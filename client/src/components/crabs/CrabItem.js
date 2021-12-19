@@ -14,7 +14,6 @@ import { useInitWeb3 } from "../../hooks/useInitWeb3";
 const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
   	const [state, setState] = useInitWeb3();
 	const [token, setToken] = useState("");
-	console.log(token);
 
 	// Create new battle
 	const putCrabToBattle = (event) => {
@@ -23,7 +22,7 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 		// Send transaction
 		state.tokenContract.methods.approve(
 			state.gameContract._address,
-			token,
+			state.web3.utils.toWei(state.web3.utils.toBN(token).toString()),
 		).send({ from : state.accounts[0] })
 		.then(function(result) {
 			// startBattle(uint256 _p1CrabID, uint256 _battleAmount)
@@ -46,11 +45,12 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 		console.log(battleInfo.battleAmount);
 		console.log(crab.crabID);
 		console.log(battleInfo.battleID);
+		console.log(state.accounts[0]);
 
 		// Send transaction
 		state.tokenContract.methods.approve(
 			state.gameContract._address,
-			battleInfo.battleAmount,
+			state.web3.utils.toWei(state.web3.utils.toBN(battleInfo.battleAmount).toString()),
 		).send({ from : state.accounts[0] })
 		.then(function(result) {
 			// acceptBattle(uint256 _p2CrabID, uint256 _battleID)
