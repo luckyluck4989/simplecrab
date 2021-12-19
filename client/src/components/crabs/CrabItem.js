@@ -72,10 +72,19 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 		//console.log(token);
 	}
 
+  // get battle staus (mus move utility)
+  function getBatleStatus(crabState) {
+		if (crabState == "0") {
+			return "";
+		} else {
+			return " | In Battle";
+		}
+    }
+
 	return (
 		<div className={styles.card}>
 			<div className={styles.card_header}>
-			<span><FontAwesomeIcon icon={faPastafarianism}/>{crab.crabID}</span>
+			<span><FontAwesomeIcon icon={faPastafarianism}/>{crab.crabID}<span className={styles.crab_inagem}>{getBatleStatus(crab.state)}</span></span>
 			</div>
 			<div className={styles.card_body}>
 			<Link to={`/crabs/${crab.crabID}`}>
@@ -88,8 +97,9 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 			</div>
 			</div>
 			<div className={styles.card_footer}>
-				{pageUse != "battle" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
-				{pageUse != "battle" && (<Button
+				
+				{pageUse != "battle" && crab.state == "0" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
+				{pageUse != "battle" && crab.state == "0" && (<Button
 					className={styles.button_battle}
 					variant="info" type="submit"
 					disabled={token == "" || crab.state == "1"}

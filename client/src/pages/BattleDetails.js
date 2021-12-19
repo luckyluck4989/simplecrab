@@ -48,6 +48,17 @@ const BattleDetails = () => {
     setState({...state, accounts : accountInfo, currentAccountInfo : accountInfo[0]});
   });
 
+  // get battle staus (mus move utility)
+  function getBatleStatus(battleStatus) {
+	  if (battleStatus == "0") {
+			return "Waiting";
+	  } else if (battleStatus == "1") {
+			return "Fighting";
+	  } else {
+			return "Ended"
+	  }
+  }
+
   return (
     <section className={styles.crab_details}>
       {isPending && <Spinner />}
@@ -119,7 +130,7 @@ const BattleDetails = () => {
                   <td>{value.p1CrabID}</td>
                   <td>{value.p2CrabID}</td>
                   <td>{value.battleStatus == '2' ? value.winerCrabID : ''}</td>
-                  <td>{value.battleStatus}</td>
+                  <td>{getBatleStatus(value.battleStatus)}</td>
                   <td>{toTimeFormat(value.battleStartTime)}</td>
                   <td>{value.battleStatus == '2' ? toTimeFormat(value.battleEndTime) : ''}</td>
                 </tr>

@@ -40,6 +40,17 @@ const Details = () => {
     }
   }, [id]);
 
+  // get battle staus (mus move utility)
+  function getBatleStatus(battleStatus) {
+	if (battleStatus == "0") {
+		  return "Waiting";
+	} else if (battleStatus == "1") {
+		  return "Fighting";
+	} else {
+		  return "Ended"
+	}
+  }
+
   return (
     <section className={styles.crab_details}>
       {isPending && <Spinner />}
@@ -63,7 +74,10 @@ const Details = () => {
           </ul>
           </div>
           <div className={styles.action_battle}>
+		  { crab.crabInfo.state == "0" && (
           <Form.Control placeholder="SCG" className={styles.token}/>
+		  )}
+		  {crab.crabInfo.state == "0" && (
           <Button
             className={styles.button_battle}
             variant="info" type="submit"
@@ -71,6 +85,7 @@ const Details = () => {
           >
             Put Crab To Battle
           </Button>
+		  )}
           </div>
           {crab.battleHistory.length > 0 && (
             <span className={styles.title}>Battle History </span>
@@ -98,7 +113,7 @@ const Details = () => {
                   <td>{value.p1CrabID}</td>
                   <td>{value.p2CrabID}</td>
                   <td>{value.battleStatus == '2' ? value.winerCrabID : ''}</td>
-                  <td>{value.battleStatus}</td>
+                  <td>{getBatleStatus(value.battleStatus)}</td>
                   <td>{toTimeFormat(value.battleStartTime)}</td>
                   <td>{value.battleStatus == '2' ? toTimeFormat(value.battleEndTime) : ''}</td>
                 </tr>

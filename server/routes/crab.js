@@ -61,7 +61,7 @@ crabRoutes.route("/crab_detail").get(function (req, res) {
 crabRoutes.route("/battle").get(function (req, res) {
 	//res.json(battleDAO.getBattle());
     let db_connect = dbo.getDb();
-    let myquery = {};
+    let myquery = {"battleStatus" : { "$in": ["0", "1"] }};
 
     db_connect
         .collection("battle")
@@ -96,8 +96,8 @@ crabRoutes.route("/battle_detail").get(function (req, res) {
   
 			let battleQuery = {
 			  $or: [
-				  {'p1CrabID': returnData.battleInfo.crabID},
-				  {'p2CrabID': returnData.battleInfo.crabID}
+				  {'p1CrabID': returnData.p1CrabInfo.crabID},
+				  {'p2CrabID': returnData.p1CrabInfo.crabID}
 			  ]
 			};
   
@@ -115,17 +115,23 @@ crabRoutes.route("/battle_detail").get(function (req, res) {
 					"state" : "0"
 				  };
 
-				  // my crab can accept battle
-				  db_connect
-					  .collection("crab")
-					  .find(myCrabQuery)
-					  .sort({"crabID" : 1})
-					  .toArray(function (err, result) {
-						if (err) throw err;
-						returnData.myCrabInfo = result;
+				  // my crab can not fight together
+				  if (req.query.owner.toLowerCase() == returnData.battleInfo.p1Adress) {
+					returnData.myCrabInfo = [];
+					res.json(returnData);
+				  } else {
+					// my crab can accept battle
+					db_connect
+						.collection("crab")
+						.find(myCrabQuery)
+						.sort({"crabID" : 1})
+						.toArray(function (err, result) {
+							if (err) throw err;
+							returnData.myCrabInfo = result;
 
-						res.json(returnData);
-					  });
+							res.json(returnData);
+						});
+				  }
 
 			});
 	  	});

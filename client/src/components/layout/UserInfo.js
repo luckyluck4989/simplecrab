@@ -28,10 +28,14 @@ const UserInfo = () => {
     setState({...state, accounts : accountInfo, currentAccountInfo : accountInfo[0]});
   });
 
+  function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
   return (
     <nav className={styles.navigation}>
       <div className={`${styles.container} container`}>
-          <span> {token} SCG </span>
+          <span> {numberWithCommas(token / 10 ** 18) } SCG </span>
           <span> {state.currentAccountInfo && (state.currentAccountInfo.slice(0,6) + '...' + state.currentAccountInfo.slice(-4))} </span>
       </div>
     </nav>
