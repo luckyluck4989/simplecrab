@@ -96,7 +96,7 @@ const BattleDetails = () => {
             <span className={styles.title}>My Crab </span>
           )}
           {battle.myCrabInfo.length > 0 && (
-          <CrabList items={battle.myCrabInfo} pageUse={'battle'} battleInfo={battle.battleInfo}/>
+          <CrabList items={battle.myCrabInfo} fetchData={fetchData} pageUse={'battle'} battleInfo={battle.battleInfo}/>
           )}
           {battle.p1BattleHistory.length > 0 && (
             <span className={styles.title}>Battle History </span>

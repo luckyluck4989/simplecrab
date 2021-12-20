@@ -70,7 +70,7 @@ const Home = () => {
         {isPending && <Spinner />}
         {error && <p>{error}</p>}
         {myCrab && (
-          <CrabList items={myCrab} pageUse={'crab'}/>
+          <CrabList items={myCrab} fetchData={fetchData} pageUse={'crab'}/>
         )}
       </section>
     </>

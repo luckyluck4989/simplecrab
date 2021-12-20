@@ -8,7 +8,7 @@ import { InitWeb3Context }  from "../../context/InitWeb3Context"
 // styles
 import styles from "./CrabItem.module.css";
 
-const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
+const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData }) => {
 	const { web3Info, web3InfoDispatch } = useContext(InitWeb3Context);
 	const [token, setToken] = useState("");
 
@@ -27,6 +27,7 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 			.then(function(result) {
 				console.log(result);
 				web3InfoDispatch({ type: 'SET_regettoken', web3: {reGetToken : true}})
+				fetchData();
 			}).catch(function(err) {
 				console.log(err.message);
 			});
@@ -55,6 +56,7 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 			.then(function(result) {
 				console.log(result);
 				web3InfoDispatch({ type: 'SET_regettoken', web3: {reGetToken : true}})
+				fetchData();
 			}).catch(function(err) {
 				console.log(err.message);
 			});
