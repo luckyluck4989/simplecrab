@@ -26,7 +26,7 @@ const CrabItem = ({ item: crab, pageUse, battleInfo }) => {
 			web3Info.gameContract.methods.startBattle(crab.crabID, token).send({ from : web3Info.accounts[0] })
 			.then(function(result) {
 				console.log(result);
-				//fetchData();
+				web3InfoDispatch({ type: 'SET_regettoken', web3: {reGetToken : true}})
 			}).catch(function(err) {
 				console.log(err.message);
 			});
