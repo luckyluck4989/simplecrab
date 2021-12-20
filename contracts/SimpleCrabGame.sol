@@ -43,6 +43,7 @@ contract SimpleCrabGame is ERC721 {
     //  Random use
     uint private winBattleCnt;
     uint private loseBattleCnt;
+	uint public tokenDecimals = 10 ** 18;
 
     // **** EVENT DEFINITION
     // eventType (1001 : NewCrab, 1002: UpdateCrab, 1003: NewBattle, 1004: UpdateBatte)
@@ -61,9 +62,9 @@ contract SimpleCrabGame is ERC721 {
 
     // User pay ERC20 token for mint crab, default 1 ERC20 token = 1 Crab
     function mintCrab() public {
-        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= 1, 'Invalid Amount');
+        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= 1 * tokenDecimals, 'Invalid Amount');
         // should burn this token
-        erc20TokenInfo.transferFrom(msg.sender, address(this), 1);
+        erc20TokenInfo.transferFrom(msg.sender, address(this), 1 * tokenDecimals);
 
         // crab strenth 0 - 30 random
         // crab kind 0 - 10 random
@@ -79,8 +80,8 @@ contract SimpleCrabGame is ERC721 {
     // Start new battle
     function startBattle(uint256 _p1CrabID, uint256 _battleAmount) public {
         // balance allowance check
-        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= _battleAmount, 'Invalid amount !');
-        erc20TokenInfo.transferFrom(msg.sender, address(this), _battleAmount);
+        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= _battleAmount * tokenDecimals, 'Invalid amount !');
+        erc20TokenInfo.transferFrom(msg.sender, address(this), _battleAmount * tokenDecimals);
 
         // crab owner, crab state check
         require(ownerOf(_p1CrabID) == msg.sender, 'Invalid owner !');
@@ -123,8 +124,8 @@ contract SimpleCrabGame is ERC721 {
     // Accept battle
     function acceptBattle(uint256 _p2CrabID, uint256 _battleID) public {
         // balance allowance check
-        require(erc20TokenInfo.allowance(msg.sender, address(this)) == battles[_battleID].battleAmount, 'Invalid amount !');
-        erc20TokenInfo.transferFrom(msg.sender, address(this), battles[_battleID].battleAmount);
+        require(erc20TokenInfo.allowance(msg.sender, address(this)) >= battles[_battleID].battleAmount * tokenDecimals, 'Invalid amount !');
+        erc20TokenInfo.transferFrom(msg.sender, address(this), battles[_battleID].battleAmount * tokenDecimals);
 
         // crab owner, crab state check
         require(ownerOf(_p2CrabID) == msg.sender, 'Invalid owner !');
@@ -156,7 +157,7 @@ contract SimpleCrabGame is ERC721 {
         );
 
         // fighting
-        endBattle(_battleID);
+        endBattle(_battleID); 
     }
 
     // Let 2 crab fight
@@ -168,13 +169,16 @@ contract SimpleCrabGame is ERC721 {
         // calculate strength
         uint256 _crab1Strength  = crabs[battles[_battleID].p1CrabID].strength;
         uint256 _crab2Strength  = crabs[battles[_battleID].p2CrabID].strength;
-        uint256 _diffStrength   = _crab1Strength - _crab2Strength >= 0 ? _crab1Strength - _crab2Strength : _crab2Strength - _crab1Strength;
-        uint256 _p1RandomStrength = randomMax(_diffStrength * 2);
+        uint256 _diffStrength   = _crab1Strength >= _crab2Strength ? _crab1Strength - _crab2Strength : _crab2Strength - _crab1Strength;
+        uint256 _p1RandomStrength = 0;
+		if (_diffStrength > 0) {
+			_p1RandomStrength = randomMax(_diffStrength * 2);
+		}
 
-        // p1Win
-        if (_crab1Strength + _p1RandomStrength > _crab2Strength + _diffStrength - _p1RandomStrength) {
+		// p1Win
+        if ((_crab1Strength + _p1RandomStrength) > (_crab2Strength + _diffStrength - _p1RandomStrength)) {
             battles[_battleID].winerCrabID = battles[_battleID].p1CrabID;
-            winBattleCnt++;
+            winBattleCnt = winBattleCnt + 1;
 
             // crab1 stronger
             if (_crab1Strength >= _crab2Strength) {
@@ -186,12 +190,12 @@ contract SimpleCrabGame is ERC721 {
             }
 
             // transfer erc20 token
-            erc20TokenInfo.transferFrom(msg.sender, battles[_battleID].p1Adress, battles[_battleID].battleAmount);
+            erc20TokenInfo.transfer(battles[_battleID].p1Adress, battles[_battleID].battleAmount * tokenDecimals * 2);
 
         // p2Win
         } else {
             battles[_battleID].winerCrabID = battles[_battleID].p2CrabID;
-            loseBattleCnt++;
+            loseBattleCnt = loseBattleCnt + 1;
 
             // crab1 stronger
             if (_crab1Strength >= _crab2Strength) {
@@ -203,15 +207,15 @@ contract SimpleCrabGame is ERC721 {
             }
 
             // transfer erc20 token
-            erc20TokenInfo.transferFrom(msg.sender, battles[_battleID].p2Adress, battles[_battleID].battleAmount);
+            erc20TokenInfo.transfer(battles[_battleID].p2Adress, battles[_battleID].battleAmount * tokenDecimals * 2);
         }
 
         // endgame info update
         battles[_battleID].battleEndTime = block.timestamp;
         crabs[battles[_battleID].p1CrabID].state = CrabState.Free;
         crabs[battles[_battleID].p2CrabID].state = CrabState.Free;
-        emit UpdateCrab(1002, msg.sender, battles[_battleID].p1CrabID, crabs[battles[_battleID].p1CrabID].strength, CrabState.Free);
-        emit UpdateCrab(1002, msg.sender, battles[_battleID].p2CrabID, crabs[battles[_battleID].p2CrabID].strength, CrabState.Free);
+        emit UpdateCrab(1002, battles[_battleID].p1Adress, battles[_battleID].p1CrabID, crabs[battles[_battleID].p1CrabID].strength, CrabState.Free);
+        emit UpdateCrab(1002, battles[_battleID].p2Adress, battles[_battleID].p2CrabID, crabs[battles[_battleID].p2CrabID].strength, CrabState.Free);
 
         emit UpdateBattle (
             1004,                                   // eventType

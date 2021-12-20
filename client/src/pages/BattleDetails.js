@@ -72,7 +72,7 @@ const BattleDetails = () => {
             </li>
             <li>
               <span className="text-muted">Battle Status : </span>
-              <p> {battle.p1CrabInfo && battle.battleInfo.battleStatus}</p>
+              <p> {battle.p1CrabInfo && getBatleStatus(battle.battleInfo.battleStatus)}</p>
             </li>
             <li>
               <span className="text-muted">P1CrabID : </span>
