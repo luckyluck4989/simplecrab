@@ -19,9 +19,13 @@
 }
 
 .container > span {
-  padding: 5px;
+  padding: 5px 20px;
   border-radius: 10px;
-  background: #0fa1d4;
+  background: #073848;
   color: white;
-  margin-left: 5px;
+}
+
+.container > span:nth-child(2) {
+  background: #052e3c;
+  margin-left: -10px;
 }
