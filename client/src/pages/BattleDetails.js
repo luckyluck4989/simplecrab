@@ -1,15 +1,14 @@
 import { useParams } from "react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import battleApi from "../api/battleApi";
-import { GoBrowser } from "react-icons/go";
-import {toTimeFormat} from "../helpers/Utility.js";
-import { useInitWeb3 } from "../hooks/useInitWeb3";
+import { toTimeFormat } from "../helpers/Utility.js";
 import CrabList from "../components/crabs/CrabList";
+import { InitWeb3Context }  from "../context/InitWeb3Context"
 
 
 // styles
 import styles from "./BattleDetails.module.css";
-import { Button, Table, Form } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 
 import Spinner from "../components/ui/Spinner";
 
@@ -18,7 +17,7 @@ const BattleDetails = () => {
   const [battle, setBattle] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
-  const [state, setState] = useInitWeb3();
+  const { web3Info } = useContext(InitWeb3Context);
 
   const fetchData = async () => {
     try {
@@ -26,7 +25,7 @@ const BattleDetails = () => {
       setIsPending(true);
       setError(null);
 
-      const params = {battleID : id, owner : state.currentAccountInfo};
+      const params = {battleID : id, owner : web3Info.currentAccountInfo};
       const response = await battleApi.getBattleById(params);
 
       setBattle(response.data);
@@ -41,12 +40,7 @@ const BattleDetails = () => {
     if (id) {
         fetchData();
     }
-  }, [state.currentAccountInfo, id]);
-
-  // Metamask change account
-  window.ethereum.on ('accountsChanged', function (accountInfo) {
-    setState({...state, accounts : accountInfo, currentAccountInfo : accountInfo[0]});
-  });
+  }, [web3Info.currentAccountInfo, id]);
 
   // get battle staus (mus move utility)
   function getBatleStatus(battleStatus) {
@@ -145,71 +139,3 @@ const BattleDetails = () => {
   );
 };
 export default BattleDetails;
-
-/*
-{battle && (
-        <article className={styles.article}>
-          <div>
-          <img
-            className={styles.thumbnail}
-            src={`/crab/${crab.crabInfo.kind}.png`} 
-          />
-          <ul className={styles.info_list}>
-            <li>
-              <span className="text-muted">Crab ID : </span>
-              <p> {crab.crabInfo.crabID}</p>
-            </li>
-            <li>
-              <span className="text-muted">Strength : </span>
-              <p> {crab.crabInfo.strength}</p>
-            </li>
-          </ul>
-          </div>
-          <div className={styles.action_battle}>
-          <Form.Control placeholder="SCG" className={styles.token}/>
-          <Button
-            className={styles.button_battle}
-            variant="info" type="submit"
-            //onClick={() => addToFavorite(game)}
-          >
-            Put Crab To Battle
-          </Button>
-          </div>
-          {crab.battleHistory.length > 0 && (
-            <span className={styles.title}>Battle History </span>
-          )}
-          {crab.battleHistory.length > 0 && (
-            <Table  className={styles.table} responsive="md">
-            <thead>
-              <tr>
-                <th>Battle ID</th>
-                <th>Battle Amount</th>
-                <th>P1CrabID</th>
-                <th>P2CrabID</th>
-                <th>Winer/Lose</th>
-                <th>Battle Status</th>
-                <th>Battle Start Time</th>
-                <th>Battle End Time</th>
-              </tr>
-            </thead>
-            <tbody>
-            {crab.battleHistory.map(( value, index ) => {
-              return (
-                <tr key={index}>
-                  <td>{value.battleID}</td>
-                  <td>{value.battleAmount}</td>
-                  <td>{value.p1CrabID}</td>
-                  <td>{value.p2CrabID}</td>
-                  <td>{value.battleStatus == '2' ? value.winerCrabID : ''}</td>
-                  <td>{value.battleStatus}</td>
-                  <td>{toTimeFormat(value.battleStartTime)}</td>
-                  <td>{value.battleStatus == '2' ? toTimeFormat(value.battleEndTime) : ''}</td>
-                </tr>
-              );
-            })}
-            </tbody>
-          </Table>
-          )}
-        </article>
-      )}
-*/

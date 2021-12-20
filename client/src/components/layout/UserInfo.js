@@ -1,42 +1,21 @@
 // styles
 import styles from "./UserInfo.module.css";
-import { useInitWeb3 } from "../../hooks/useInitWeb3";
-import { useState, useEffect } from "react";
+import { InitWeb3Context }  from "../../context/InitWeb3Context"
+import { addComma } from "../../helpers/Utility.js";
+import { useContext } from "react";
 
 const UserInfo = () => {
   const activeStyle = {
     color: "#fff",
   };
 
-  const [state, setState] = useInitWeb3();
-  const [token, setToken] = useState("");
-
-  	// Get account token balance
-	const loadTokenBalance = async () => {
-		const response = await state.tokenContract.methods.balanceOf(state.currentAccountInfo).call();
-    setToken(response);
-	};
-
-  useEffect(() => {
-    if (state.tokenContract && state.currentAccountInfo) {
-      loadTokenBalance();
-    }
-  }, [state.tokenContract, state.currentAccountInfo]);
-
-  // Metamask change account
-  window.ethereum.on ('accountsChanged', function (accountInfo) {
-    setState({...state, accounts : accountInfo, currentAccountInfo : accountInfo[0]});
-  });
-
-  function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
+  const {web3Info} = useContext(InitWeb3Context);
 
   return (
     <nav className={styles.navigation}>
       <div className={`${styles.container} container`}>
-          <span> {numberWithCommas(token / 10 ** 18) } SCG </span>
-          <span> {state.currentAccountInfo && (state.currentAccountInfo.slice(0,6) + '...' + state.currentAccountInfo.slice(-4))} </span>
+          <span> {addComma(web3Info.token / 10 ** 18)} SCG </span>
+          <span> {web3Info && web3Info.currentAccountInfo && (web3Info.currentAccountInfo.slice(0,6) + '...' + web3Info.currentAccountInfo.slice(-4))} </span>
       </div>
     </nav>
   );

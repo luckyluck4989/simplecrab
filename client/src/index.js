@@ -4,14 +4,14 @@ import { BrowserRouter } from "react-router-dom";
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import "./index.css";
 import App from "./App";
-import FavoritesContextProvider from "./context/FavoritesContext";
+import InitWeb3ContextProvider from "./context/InitWeb3Context.js";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <FavoritesContextProvider>
+      <InitWeb3ContextProvider>
         <App />
-      </FavoritesContextProvider>
+      </InitWeb3ContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")

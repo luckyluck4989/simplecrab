@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Button } from 'react-bootstrap';
 import CrabList from "../components/crabs/CrabList";
 import Spinner from "../components/ui/Spinner";
-import { useInitWeb3 } from "../hooks/useInitWeb3";
+import { InitWeb3Context }  from "../context/InitWeb3Context"
 import crabApi from "../api/crabApi";
 import styles from "./Home.module.css";
 
@@ -10,15 +10,15 @@ const Home = () => {
   const [myCrab, setMyCrab] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
-  const [state, setState] = useInitWeb3();
-
+  const { web3Info,web3InfoDispatch } = useContext(InitWeb3Context);
+  
   const fetchData = async () => {
     try {
       setMyCrab(null);
       setIsPending(true);
       setError(null);
 
-      const params = {owner : state.currentAccountInfo};
+      const params = {owner : web3Info.currentAccountInfo};
       const response = await crabApi.getMyCrab(params);
 
       setMyCrab(response.data);
@@ -30,24 +30,25 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (state.currentAccountInfo) {
+    if (web3Info.currentAccountInfo) {
         fetchData();
     }
-  }, [state.currentAccountInfo]);
+  }, [web3Info.currentAccountInfo]);
 
   // Host creat new game
   const mintCrab = (event) => {
     event.preventDefault();
     // Send transaction
-    state.tokenContract.methods.approve(
-          state.gameContract._address,
-          state.web3.utils.toWei(state.web3.utils.toBN(1).toString()),
-    ).send({ from : state.accounts[0] })
+    web3Info.tokenContract.methods.approve(
+      web3Info.gameContract._address,
+      web3Info.web3.utils.toWei(web3Info.web3.utils.toBN(1).toString()),
+    ).send({ from : web3Info.accounts[0] })
     .then(function(result) {
         // Send transaction
-        state.gameContract.methods.mintCrab().send({ from : state.accounts[0] })
+        web3Info.gameContract.methods.mintCrab().send({ from : web3Info.accounts[0] })
         .then(function(result) {
            console.log(result);
+           web3InfoDispatch({ type: 'SET_regettoken', web3: {reGetToken : true}})
            fetchData();
         }).catch(function(err) {
             console.log(err.message);
@@ -56,11 +57,6 @@ const Home = () => {
          console.log(err.message);
     });
   };
-
-  // Metamask change account
-  window.ethereum.on ('accountsChanged', function (accountInfo) {
-    setState({...state, accounts : accountInfo, currentAccountInfo : accountInfo[0]});
-  });
 
   return (
     <>

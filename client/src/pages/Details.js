@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
 import crabApi from "../api/crabApi";
-import { GoBrowser } from "react-icons/go";
 import {toTimeFormat} from "../helpers/Utility.js";
 
 
