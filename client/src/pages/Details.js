@@ -1,7 +1,8 @@
 import { useParams } from "react-router";
-import { useState, useEffect } from "react";
+import { useContext, useState, useEffect } from "react";
 import crabApi from "../api/crabApi";
 import {toTimeFormat} from "../helpers/Utility.js";
+import { InitWeb3Context }  from "../context/InitWeb3Context"
 
 
 // styles
@@ -15,6 +16,8 @@ const Details = () => {
   const [crab, setCrab] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState(null);
+  const [token, setToken] = useState("");
+  const { web3Info, web3InfoDispatch } = useContext(InitWeb3Context);
 
   const fetchData = async () => {
     try {
@@ -39,16 +42,46 @@ const Details = () => {
     }
   }, [id]);
 
-  // get battle staus (mus move utility)
-  function getBatleStatus(battleStatus) {
-	if (battleStatus == "0") {
-		  return "Waiting";
-	} else if (battleStatus == "1") {
-		  return "Fighting";
-	} else {
-		  return "Ended"
+	// get battle staus (mus move utility)
+	function getBatleStatus(battleStatus) {
+		if (battleStatus == "0") {
+			return "Waiting";
+		} else if (battleStatus == "1") {
+			return "Fighting";
+		} else {
+			return "Ended"
+		}
 	}
-  }
+
+	// Input token handler
+	const tokenInputHandler = (event) => {
+		// need check balance of token here
+		setToken(event.target.value)
+	}
+
+	// Create new battle
+	const putCrabToBattle = (event) => {
+		event.preventDefault();
+
+		// Send transaction
+		web3Info.tokenContract.methods.approve(
+			web3Info.gameContract._address,
+			web3Info.web3.utils.toWei(web3Info.web3.utils.toBN(token).toString()),
+		).send({ from : web3Info.accounts[0] })
+		.then(function(result) {
+			// startBattle(uint256 _p1CrabID, uint256 _battleAmount)
+			web3Info.gameContract.methods.startBattle(crab.crabInfo.crabID, token).send({ from : web3Info.accounts[0] })
+			.then(function(result) {
+				console.log(result);
+				web3InfoDispatch({ type: 'SET_regettoken', web3: {reGetToken : true}})
+				fetchData();
+			}).catch(function(err) {
+				console.log(err.message);
+			});
+		}).catch(function(err) {
+				console.log(err.message);
+		});
+	};
 
   return (
     <section className={styles.crab_details}>
@@ -74,13 +107,14 @@ const Details = () => {
           </div>
           <div className={styles.action_battle}>
 		  { crab.crabInfo.state == "0" && (
-          <Form.Control placeholder="SCG" className={styles.token}/>
+          <Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>
 		  )}
 		  {crab.crabInfo.state == "0" && (
           <Button
             className={styles.button_battle}
             variant="info" type="submit"
-            //onClick={() => addToFavorite(game)}
+			disabled={token == ""}
+            onClick={putCrabToBattle}
           >
             Put Crab To Battle
           </Button>
