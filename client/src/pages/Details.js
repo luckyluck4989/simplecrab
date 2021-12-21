@@ -62,6 +62,7 @@ const Details = () => {
 	// Create new battle
 	const putCrabToBattle = (event) => {
 		event.preventDefault();
+    setIsPending(true);
 
 		// Send transaction
 		web3Info.tokenContract.methods.approve(
@@ -77,15 +78,18 @@ const Details = () => {
 				fetchData();
 			}).catch(function(err) {
 				console.log(err.message);
+        setIsPending(false);
 			});
 		}).catch(function(err) {
 				console.log(err.message);
+        setIsPending(false);
 		});
 	};
 
   return (
+    <>
+    {isPending && <Spinner />}
     <section className={styles.crab_details}>
-      {isPending && <Spinner />}
       {error && <p>{error}</p>}
       {crab && (
         <article className={styles.article}>
@@ -158,6 +162,7 @@ const Details = () => {
         </article>
       )}
     </section>
+    </>
   );
 };
 export default Details;

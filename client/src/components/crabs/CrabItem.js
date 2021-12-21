@@ -8,14 +8,14 @@ import { InitWeb3Context }  from "../../context/InitWeb3Context"
 // styles
 import styles from "./CrabItem.module.css";
 
-const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData }) => {
+const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData, setIsPending }) => {
 	const { web3Info, web3InfoDispatch } = useContext(InitWeb3Context);
 	const [token, setToken] = useState("");
 
 	// Create new battle
 	const putCrabToBattle = (event) => {
 		event.preventDefault();
-
+		setIsPending(true);
 		// Send transaction
 		web3Info.tokenContract.methods.approve(
 			web3Info.gameContract._address,
@@ -30,9 +30,11 @@ const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData }) => {
 				fetchData();
 			}).catch(function(err) {
 				console.log(err.message);
+				setIsPending(false);
 			});
 		}).catch(function(err) {
 				console.log(err.message);
+				setIsPending(false);
 		});
 	};
 
@@ -44,6 +46,8 @@ const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData }) => {
 		console.log(crab.crabID);
 		console.log(battleInfo.battleID);
 		console.log(web3Info.accounts[0]);
+
+		setIsPending(true);
 
 		// Send transaction
 		web3Info.tokenContract.methods.approve(
@@ -59,9 +63,11 @@ const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData }) => {
 				fetchData();
 			}).catch(function(err) {
 				console.log(err.message);
+				setIsPending(false);
 			});
 		}).catch(function(err) {
 				console.log(err.message);
+				setIsPending(false);
 		});
 	};
 

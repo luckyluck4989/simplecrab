@@ -5,9 +5,11 @@ require("dotenv").config({ path: "./config.env" });
 const port = process.env.PORT || 5000;
 const Web3 = require('web3');
 const fs = require('fs');
-const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:7545');
+const provider = new Web3.providers.WebsocketProvider('ws://157.230.37.26:8545');
+//const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:7545');
+console.log(provider);
 let web3 = new Web3(provider);
-let senderAccount = '0x29b8aEdf5B9658c5ABf682605439456AA2A7F9Fd';
+let senderAccount = '0xFA984f20A2916F8B29e237c0cEa193672d9Ef371';
 const contractJSON = JSON.parse(fs.readFileSync('./contracts/SimpleCrabGame.json'), 'utf8');
 const abi = contractJSON.abi;
 const contract = new web3.eth.Contract(abi, senderAccount);
@@ -34,7 +36,7 @@ app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 
     let subscription = web3.eth.subscribe("logs", {
-			address: '0xb699D5B64eA09148F944A4C6bBa6Bb51204E8F33'
+			address: '0xde8377985Ab77B45714692ad60A81969BFcc6a31'
 		}, function(err, result){
         if (err){
             console.log(err);

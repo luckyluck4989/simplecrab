@@ -38,6 +38,7 @@ const Home = () => {
   // Host creat new game
   const mintCrab = (event) => {
     event.preventDefault();
+    setIsPending(true);
     // Send transaction
     web3Info.tokenContract.methods.approve(
       web3Info.gameContract._address,
@@ -52,14 +53,17 @@ const Home = () => {
            fetchData();
         }).catch(function(err) {
             console.log(err.message);
+            setIsPending(false);
         });
     }).catch(function(err) {
          console.log(err.message);
+         setIsPending(false);
     });
   };
 
   return (
     <>
+      {isPending && <Spinner />}
       <Button
         className={styles.button_battle}
         variant="info" type="submit"
@@ -67,10 +71,9 @@ const Home = () => {
         {"Mint Crab"}
       </Button>
       <section className={styles.games_content}>
-        {isPending && <Spinner />}
         {error && <p>{error}</p>}
         {myCrab && (
-          <CrabList items={myCrab} fetchData={fetchData} pageUse={'crab'}/>
+          <CrabList items={myCrab} fetchData={fetchData} setIsPending={setIsPending} pageUse={'crab'}/>
         )}
       </section>
     </>

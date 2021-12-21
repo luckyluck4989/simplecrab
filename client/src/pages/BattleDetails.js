@@ -29,7 +29,7 @@ const BattleDetails = () => {
       const response = await battleApi.getBattleById(params);
 
       setBattle(response.data);
-      setIsPending(false);
+      //setIsPending(false);
     } catch (err) {
       console.error(err);
       setError(err.message); 
@@ -54,8 +54,8 @@ const BattleDetails = () => {
   }
 
   return (
+    <>     {isPending && <Spinner />}
     <section className={styles.crab_details}>
-      {isPending && <Spinner />}
       {error && <p>{error}</p>}
       {battle && (
         <article className={styles.article}>
@@ -96,7 +96,7 @@ const BattleDetails = () => {
             <span className={styles.title}>My Crab </span>
           )}
           {battle.myCrabInfo.length > 0 && (
-          <CrabList items={battle.myCrabInfo} fetchData={fetchData} pageUse={'battle'} battleInfo={battle.battleInfo}/>
+          <CrabList items={battle.myCrabInfo} setIsPending={setIsPending} fetchData={fetchData} pageUse={'battle'} battleInfo={battle.battleInfo}/>
           )}
           {battle.p1BattleHistory.length > 0 && (
             <span className={styles.title}>Battle History </span>
@@ -136,6 +136,7 @@ const BattleDetails = () => {
         </article>
       )}
     </section>
+    </>
   );
 };
 export default BattleDetails;

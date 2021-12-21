@@ -35,11 +35,13 @@ const Battle = () => {
   }, []);
 
   return (
-    <section className={styles.battle}>
+    <>
       {isPending && <Spinner />}
-      {error && <p>{error}</p>}
-      {battle && <BattleList items={battle} />}
-    </section>
+      <section className={styles.battle}>
+        {error && <p>{error}</p>}
+        {battle && <BattleList items={battle} />}
+      </section>
+    </>
   );
 };
 
