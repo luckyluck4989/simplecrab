@@ -29,7 +29,7 @@ const BattleDetails = () => {
       const response = await battleApi.getBattleById(params);
 
       setBattle(response.data);
-      //setIsPending(false);
+      setIsPending(false);
     } catch (err) {
       console.error(err);
       setError(err.message); 
