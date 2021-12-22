@@ -44,9 +44,9 @@ const Details = () => {
 
 	// get battle staus (mus move utility)
 	function getBatleStatus(battleStatus) {
-		if (battleStatus == "0") {
+		if (battleStatus === "0") {
 			return "Waiting";
-		} else if (battleStatus == "1") {
+		} else if (battleStatus === "1") {
 			return "Fighting";
 		} else {
 			return "Ended"
@@ -110,17 +110,17 @@ const Details = () => {
           </ul>
           </div>
           <div className={styles.action_battle}>
-		  { crab.crabInfo.state == "0" && (
+		  { crab.crabInfo.state === "0" && (
           <Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>
 		  )}
-		  {crab.crabInfo.state == "0" && (
+		  {crab.crabInfo.state === "0" && (
           <Button
             className={styles.button_battle}
             variant="info" type="submit"
-			disabled={token == ""}
+			disabled={token === ""}
             onClick={putCrabToBattle}
           >
-            Put Crab To Battle
+            New Battle
           </Button>
 		  )}
           </div>
@@ -149,10 +149,10 @@ const Details = () => {
                   <td>{value.battleAmount}</td>
                   <td>{value.p1CrabID}</td>
                   <td>{value.p2CrabID}</td>
-                  <td>{value.battleStatus == '2' ? value.winerCrabID : ''}</td>
+                  <td>{value.battleStatus === '2' ? value.winerCrabID : ''}</td>
                   <td>{getBatleStatus(value.battleStatus)}</td>
                   <td>{toTimeFormat(value.battleStartTime)}</td>
-                  <td>{value.battleStatus == '2' ? toTimeFormat(value.battleEndTime) : ''}</td>
+                  <td>{value.battleStatus === '2' ? toTimeFormat(value.battleEndTime) : ''}</td>
                 </tr>
               );
             })}

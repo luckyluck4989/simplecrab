@@ -79,7 +79,7 @@ const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData, setIsPending }) 
 
   // get battle staus (mus move utility)
   function getBatleStatus(crabState) {
-		if (crabState == "0") {
+		if (crabState === "0") {
 			return "";
 		} else {
 			return " | In Battle";
@@ -103,17 +103,17 @@ const CrabItem = ({ item: crab, pageUse, battleInfo, fetchData, setIsPending }) 
 			</div>
 			<div className={styles.card_footer}>
 				
-				{pageUse != "battle" && crab.state == "0" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
-				{pageUse != "battle" && crab.state == "0" && (<Button
+				{pageUse !== "battle" && crab.state === "0" && (<Form.Control placeholder="SCG" className={styles.token} value={token} onChange={tokenInputHandler}/>)}
+				{pageUse !== "battle" && crab.state === "0" && (<Button
 					className={styles.button_battle}
 					variant="info" type="submit"
-					disabled={token == "" || crab.state == "1"}
+					disabled={token === "" || crab.state === "1"}
 					onClick={putCrabToBattle}
 				>
-					Put Crab To Battle
+					New Battle
 				</Button>
 				)}
-				{pageUse == "battle" && (<Button
+				{pageUse === "battle" && (<Button
 					className={styles.button_battle_detail}
 					variant="info" type="submit"
 					onClick={acceptBattle}

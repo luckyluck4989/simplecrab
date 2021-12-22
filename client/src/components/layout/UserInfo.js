@@ -5,10 +5,6 @@ import { addComma } from "../../helpers/Utility.js";
 import { useContext } from "react";
 
 const UserInfo = () => {
-  const activeStyle = {
-    color: "#fff",
-  };
-
   const {web3Info} = useContext(InitWeb3Context);
 
   return (
