@@ -6,8 +6,17 @@ const toTimeFormat = (data) => {
 }
 
 const addComma = (string) => {
-	return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+	string = String(string).replace(/[^0-9\.\-]*/gi, '');
+
+	if (string !== '') {
+		string = parseFloat(string) + "";
+	}
+
+	for (var i = 0; i < string.length / 3; i++) {
+		string = string.replace(/^([+-]?\d+)(\d\d\d)/, '$1,$2');
+	}
+	return string;
+}	
 
 const getWeb3 = () =>
 	new Promise(async (resolve, reject) => {

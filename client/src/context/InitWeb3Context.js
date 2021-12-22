@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { getWeb3 } from "../helpers/Utility.js";
 import SimpleStorageContract from "../contracts/SimpleCrabGame.json";
 import SCG20Token from "../contracts/SCG20Token.json";
