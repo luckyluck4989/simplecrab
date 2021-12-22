@@ -7,7 +7,7 @@ const Web3 = require('web3');
 const fs = require('fs');
 const provider = new Web3.providers.WebsocketProvider('ws://157.230.37.26:8545');
 //const provider = new Web3.providers.WebsocketProvider('ws://127.0.0.1:7545');
-console.log(provider);
+//console.log(provider);
 let web3 = new Web3(provider);
 let senderAccount = '0xFA984f20A2916F8B29e237c0cEa193672d9Ef371';
 const contractJSON = JSON.parse(fs.readFileSync('./contracts/SimpleCrabGame.json'), 'utf8');
