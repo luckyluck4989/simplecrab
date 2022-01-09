@@ -32,6 +32,14 @@ const Header = () => {
                 Battle
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="marketplace"
+                style={({ isActive }) => (isActive ? activeStyle : undefined)}
+              >
+                MarketPlace
+              </NavLink>
+            </li>
           </ul>
         </nav>
       </div>

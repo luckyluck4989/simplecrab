@@ -22,7 +22,6 @@ const BattleItem = ({ item: battle }) => {
           </div>
         </Link>
         <div className={styles.card_info}>
-           <span>Strength : {battle.strength} | Win : {battle.winBattle} | Lose : {battle.loseBattle}</span>
            <span>Start Time : {toTimeFormat(battle.battleStartTime)}</span>
         </div>
       </div>

@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 
 // pages & components
 import Home from "./pages/Home";
+import MarketPlace from "./pages/MarketPlace";
 import Battle from "./pages/Battle";
 import Details from "./pages/Details";
 import BattleDetails from "./pages/BattleDetails";
@@ -16,6 +17,7 @@ function App() {
         <Route path="battle" element={<Battle />} />
         <Route path="crabs/:id" element={<Details />} />
         <Route path="battles/:id" element={<BattleDetails />} />
+        <Route path="marketplace" element={<MarketPlace />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Layout>
